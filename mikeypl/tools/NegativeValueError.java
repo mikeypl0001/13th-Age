@@ -5,10 +5,10 @@ import java.lang.RuntimeException;
 //	This class is used to throw an error if the value of something is negative
 
 
-class NegativeValueError extends RuntimeException {
+public class NegativeValueError extends RuntimeException {
 	
 	public NegativeValueError() {
-		super();
+		super("This Value Cannot Be Less Than Zero");
 	}
 	
 	public NegativeValueError(String msg) {

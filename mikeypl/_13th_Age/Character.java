@@ -35,10 +35,10 @@ class Character implements CharMethods {
 		this.npc = npc;
 		this.ally = ally;
 		this.enemy = enemy;
-		this.ac = ac;
-		this.pd = pd;
-		this.md = md;
-		this.max_hp = hp;
+		this.ac = checkPositive(ac);
+		this.pd = checkPositive(pd);
+		this.md = checkPositive(md);
+		this.max_hp = checkPositive(hp);
 		this.curr_hp = max_hp;
 		
 	}
@@ -76,9 +76,7 @@ class Character implements CharMethods {
 	
 	public void setMaxHP (int val) {
 		
-		//int hp = checkPositive_MxHP(val);
-		//if
-		this.max_hp = val;
+		this.max_hp = checkPositive(val);
 		
 	}
 	
@@ -87,40 +85,40 @@ class Character implements CharMethods {
 		if (val > max_hp)
 			System.out.printf("Invalid Current HP, you enter %d when the max health is %d \n", val, max_hp);
 		else
-			this.curr_hp = val;
+			this.curr_hp = checkPositive(val);
 		
 	}
 	
 	public void setACMDPDHP ( int ac, int pd, int md, int hp ) {
 		
-		this.ac = ac;
-		this.pd = pd;
-		this.md = md;
-		this.max_hp = hp;
+		this.ac = checkPositive(ac);
+		this.pd = checkPositive(pd);
+		this.md = checkPositive(md);
+		this.max_hp = checkPositive(hp);
 		
 	}
 	
 	public void changeAC ( int ac ) {
 		
-		this.ac = ac;
+		this.ac = checkPositive(ac);
 		
 	}
 	
 	public void changePD ( int pd ) {
 		
-		this.pd = pd;
+		this.pd = checkPositive(pd);
 		
 	}
 	
 	public void changeMD ( int md ) {
 		
-		this.md = md;
+		this.md = checkPositive(md);
 		
 	}
 	
 	public void changeMaxHP ( int hp ) {
 		
-		this.max_hp = hp;
+		this.max_hp = checkPositive(hp);
 				
 	}
 	
@@ -137,17 +135,32 @@ class Character implements CharMethods {
 			this.curr_hp += val;
 			
 		}
+		
+		if (this.curr_hp <= 0) {
+			System.out.println("YOU ARE DEAD");
+			//DEAD & DYING METHOD
+		}
 	}
 	
-	public void incMaxHP ( int val ) {
+	public void incMaxHP ( int val ) throws NegativeValueError {
 		
-		this.max_hp += val;
-		this.curr_hp += val;
+		if (val >= 0) {
+			
+			this.max_hp += val;
+			this.curr_hp += val;
+		
+		} else {
+			
+			throw new NegativeValueError("YOU ARE MEANT TO BE INCREASING HEALTH NOT DECREASING!");
+			
+		}
+		
 	}
 	
 	//Ally to Enemy
 	/** Implement in subclass calling super adding extras*/
 	public void allyBecomesEnemy () {
+		
 		
 		this.ally = !ally;
 		this.enemy = !enemy;
@@ -214,37 +227,17 @@ class Character implements CharMethods {
 		return this.ally;
 		
 	}
-//Check if HP is postive,
-
-	public void inAFight() {
+//Check if Anything is postive,
+	//PROTECTED?
+	private static int checkPositive(int value) throws NegativeValueError {
 		
-		this.inFight = true;
-		
-	}
-	
-	public outOfFight() {
-		
-		this.inFight = false;
-		
-	}
-	
-	public static void checkPositive(int val) {
-		
-		if (val > 0) {
-			
-			return val;
-			
-		} else if (	inFight && val <= 0) {
-			
-			return 0;
-			
+		if (value < 0) {
+			throw new NegativeValueError();
 		} else {
-			
-			return -1;
-			
+			return value;
 		}
-		
 	}
+	
 //FMethods for text formatter
 	private static boolean noSpaces ( String input ) {
 			
@@ -389,7 +382,7 @@ class Character implements CharMethods {
 	public static void main ( String[] args ) {
 		
 		Character gary = new Character("Gar-ou Ray", "Wood Elf", false, true, false, 17, 14, 11, 30);
-		
+		//TEST GETTERS
 		print(gary.getName());
 		print(gary.getRace());
 		print("ac: " + gary.getAC());
@@ -400,7 +393,7 @@ class Character implements CharMethods {
 		print("NPC: " + gary.isNPC());
 		print("Enemy: " + gary.isEnemy());
 		print("Ally: " + gary.isAlly());
-		
+		//TEST WORD FORMATTER
 		print("Change name to gary");
 		gary.setName("   Gary    ");
 		print(gary.getName());
@@ -408,34 +401,34 @@ class Character implements CharMethods {
 		print("Change Race to Human");
 		gary.setRace("Human");
 		print(gary.getRace());
-		
+		//TEST setNPC
 		print("Become a NPC");
 		gary.setIsNPC(true);
 		print(gary.isNPC());
-		
+		//TEST ALLY BECOMES ENEMY
 		print("Become Enemy");
 		gary.allyBecomesEnemy();
 		print("Ally: " + gary.isAlly());
 		print("Enemy: " + gary.isEnemy());
-		
+		//TEST setMaxHP
 		print("HP to 50");
 		gary.setMaxHP(50);
 		print(gary.getMaxHP());
-		
+		//TEST setCurrHP
 		print("Current HP to 60");
 		gary.setCurrHP(60);
 		print(gary.getCurrHP());
-		
+		//TEST setCurrHP
 		print("Current HP to 40");
 		gary.setCurrHP(40);
 		print(gary.getCurrHP());
-		
+		//TEST setACMDPDHP
 		print("SET AC MD PD HP 1 1 1 1");
 		gary.setACMDPDHP(1, 1, 1, 1);
-		System.out.printf("AC %d MD %d PD %d HP %d \r", gary.getAC(), gary.getMD(), 
+		System.out.printf("AC %d MD %d PD %d HP %d \n", gary.getAC(), gary.getMD(), 
 							gary.getPD(), gary.getMaxHP());
 		
-		print("Change AC 10");
+		System.out.println("Change AC 10");
 		gary.changeAC(10);
 		print(gary.getAC());
 		
@@ -457,9 +450,28 @@ class Character implements CharMethods {
 		
 		print("Increase Max HP by 10");
 		gary.incMaxHP(10);
-		System.out.printf("Max HP: %d Curr HP %d", gary.getMaxHP(),
+		System.out.printf("Max HP: %d Curr HP %d \n", gary.getMaxHP(),
 				gary.getCurrHP());
 	
+	
+		//TESTING NEGATIVE
+		Character twoBits = new Character("Two Bits", "gnome", true, true, false, 0, 1, 2, 3);
+		
+			//TEST CURR > MAX
+			twoBits.setCurrHP(30);
+			print("CURR HP: " + twoBits.getCurrHP() + " MAX HP: " + twoBits.getMaxHP());
+		
+			//SETTERS are good
+			//CHANGERS
+			twoBits.changeAC(1);
+			twoBits.changePD(1);
+			twoBits.changeMD(1);
+			twoBits.changeMaxHP(1);
+		//INCREASERS
+		twoBits.incCurrHP(-4);
+		print("CURR HP: " + twoBits.getCurrHP());
+		//twoBits.incMaxHP(-59);
+		
 	}
 		
 }
