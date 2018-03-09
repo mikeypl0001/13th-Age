@@ -229,7 +229,7 @@ class Character implements CharMethods {
 	}
 //Check if Anything is postive,
 	//PROTECTED?
-	private static int checkPositive(int value) throws NegativeValueError {
+	protected static int checkPositive(int value) throws NegativeValueError {
 		
 		if (value < 0) {
 			throw new NegativeValueError();
