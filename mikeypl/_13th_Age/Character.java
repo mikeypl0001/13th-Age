@@ -19,7 +19,7 @@ class Character implements CharMethods {
 	//CHARACTER NAME
 	private String name, race;
 	//private Race race;
-	boolean npc, ally, enemy; //ally and enemy are npc
+	CharType charType;
 		
 	private int meleeAttackMod, meleeHitMod, meleeMiss; /** NOT IMPLEMENTED YET */
 	
@@ -27,14 +27,11 @@ class Character implements CharMethods {
 	
 	public boolean inFight;
 	
-	public Character ( String name, String race, boolean npc, boolean ally, boolean enemy,
-							int ac, int pd, int md, int hp ) {
+	public Character ( String name, String race, CharType charType, int ac, int pd, int md, int hp ) {
 		
 		this.name = formatText ( name );
 		this.race = formatText ( race );
-		this.npc = npc;
-		this.ally = ally;
-		this.enemy = enemy;
+		this.charType = charType;
 		this.ac = checkPositive(ac);
 		this.pd = checkPositive(pd);
 		this.md = checkPositive(md);
@@ -56,21 +53,9 @@ class Character implements CharMethods {
 		
 	}
 	
-	public void setIsNPC ( boolean npc ) {
+	public void setCharType ( CharType charType ) {
 		
-		this.npc = npc;
-		
-	}
-	
-	public void setIsAlly ( boolean ally ) {
-		
-		this.ally = ally;
-		
-	}
-	
-	public void setIsEnemy ( boolean enemy ) {
-		
-		this.enemy = enemy;
+		this.charType = charType;
 		
 	}
 	
@@ -161,10 +146,7 @@ class Character implements CharMethods {
 	/** Implement in subclass calling super adding extras*/
 	public void allyBecomesEnemy () {
 		
-		
-		this.ally = !ally;
-		this.enemy = !enemy;
-		
+		this.charType = (charType == CharType.ALLY) ? CharType.ENEMY : charType; 
 	}
 	
 	//GETTERS
@@ -210,21 +192,26 @@ class Character implements CharMethods {
 		
 	}
 	
+	public CharType getCharType() {
+		
+		return this.charType;
+		
+	}
+	
 	public boolean isNPC () {
 		
-		return this.npc;
-		
+		return (charType != CharType.PLAYER);
 	}
 	
 	public boolean isEnemy () {
 		
-		return this.enemy;
+		return (charType == CharType.ENEMY);
 		
 	}
 	
 	public boolean isAlly () {
 		
-		return this.ally;
+		return (charType == CharType.ALLY);
 		
 	}
 //Check if Anything is postive,
@@ -381,7 +368,7 @@ class Character implements CharMethods {
 		
 	public static void main ( String[] args ) {
 		
-		Character gary = new Character("Gar-ou Ray", "Wood Elf", false, true, false, 17, 14, 11, 30);
+		Character gary = new Character("Gar-ou Ray", "Wood Elf", CharType.PLAYER, 17, 14, 11, 30);
 		//TEST GETTERS
 		print(gary.getName());
 		print(gary.getRace());
@@ -390,6 +377,7 @@ class Character implements CharMethods {
 		print("md: " + gary.getMD());
 		print("currHP: " + gary.getCurrHP());
 		print("MaxHP: " + gary.getMaxHP());
+		print("CharTpye: " + gary.getCharType());
 		print("NPC: " + gary.isNPC());
 		print("Enemy: " + gary.isEnemy());
 		print("Ally: " + gary.isAlly());
@@ -403,7 +391,7 @@ class Character implements CharMethods {
 		print(gary.getRace());
 		//TEST setNPC
 		print("Become a NPC");
-		gary.setIsNPC(true);
+		gary.setCharType(CharType.ALLY);
 		print(gary.isNPC());
 		//TEST ALLY BECOMES ENEMY
 		print("Become Enemy");
@@ -455,7 +443,7 @@ class Character implements CharMethods {
 	
 	
 		//TESTING NEGATIVE
-		Character twoBits = new Character("Two Bits", "gnome", true, true, false, 0, 1, 2, 3);
+		Character twoBits = new Character("Two Bits", "gnome", CharType.ALLY, 0, 1, 2, 3);
 		
 			//TEST CURR > MAX
 			twoBits.setCurrHP(30);

@@ -1,8 +1,6 @@
 package mikeypl._13th_Age;
 
 import mikeypl.tools.Dice;
-import mikeypl._13th_Age.Character.*;
-//import mikeypl._13th_Age.Character.checkPositive;
 
 /**
  *  More to do with how this works, remember you can use checkPositive
@@ -49,7 +47,7 @@ public class Player extends Character implements LvlUp, FullRest, Abilities {//e
 	//CONSTRUCTORS
 	Player( String name, String race, String _class ) {
 		//PLACEHOLDER`
-		super(name, race, false, true, false, 0, 0, 0, 0);
+		super(name, race, CharType.PLAYER, 0, 0, 0, 0);
 		
 		this._class = _class;
 		this.currRec = maxRecov;
@@ -66,7 +64,7 @@ public class Player extends Character implements LvlUp, FullRest, Abilities {//e
 	Player( String name, String race, String _class,
 							int str, int con, int dex, int intgnce, int wis, int cha ) {
 		//PLACEHOLDER						
-		super(name, race, false, true, false, 0, 0, 0, 0);
+		super(name, race, CharType.PLAYER, 0, 0, 0, 0);
 		
 		this._class = super.formatText ( _class );
 		this.str = checkPositive(str);
