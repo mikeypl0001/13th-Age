@@ -11,7 +11,7 @@ import mikeypl._13th_Age.interfaces.*;
 public class Player extends Character implements LvlUp, FullRest, Abilities {//extends Ally maybe
 	
 	//Name Race Class
-	private String _class;
+	private String className;
 	
 	//Initial Stats
 	/**SUBCLASS?**/
@@ -31,7 +31,7 @@ public class Player extends Character implements LvlUp, FullRest, Abilities {//e
 	/**
 	//Other Stuff
 	private String[][] icons, backgrounds;
-	private String[][] _classFeats, talents, powers_spells, magic_items, equipment;
+	private String[][] classNameFeats, talents, powers_spells, magic_items, equipment;
 	private String[] racial_pow;
 	*/
 	
@@ -49,11 +49,11 @@ public class Player extends Character implements LvlUp, FullRest, Abilities {//e
 	*/
 	
 	//CONSTRUCTORS
-	Player( String name, String race, String _class ) {
+	Player( String name, String race, String className ) {
 		//PLACEHOLDER`
 		super(name, race, CharType.PLAYER, 0, 0, 0, 0);
 		
-		this._class = _class;
+		this.className = className;
 		this.currRec = maxRecov;
 			
 		randomiseStats ();
@@ -65,12 +65,12 @@ public class Player extends Character implements LvlUp, FullRest, Abilities {//e
 		
 	}
 	
-	Player( String name, String race, String _class,
+	Player( String name, String race, String className,
 							int str, int con, int dex, int intgnce, int wis, int cha ) {
 		//PLACEHOLDER						
 		super(name, race, CharType.PLAYER, 0, 0, 0, 0);
 		
-		this._class = super.formatText ( _class );
+		this.className = super.formatText ( className );
 		this.str = checkPositive(str);
 		this.con = checkPositive(con);
 		this.dex = checkPositive(dex);
@@ -82,11 +82,11 @@ public class Player extends Character implements LvlUp, FullRest, Abilities {//e
 								
 	}
 							
-	Player( String name, String race, String _class,
+	Player( String name, String race, String className,
 							int str, int con, int dex, int intgnce, int wis, int cha,
 								int recov ) {
 									
-		this (name, race, _class, str, con, dex, intgnce, wis, cha);
+		this (name, race, className, str, con, dex, intgnce, wis, cha);
 		this.maxRecov = checkPositive(recov);
 		this.currRec = maxRecov;
 		
@@ -394,7 +394,7 @@ public class Player extends Character implements LvlUp, FullRest, Abilities {//e
 	
 	public String get_Class () {
 		
-		return this._class;
+		return this.className;
 		
 	}
 	

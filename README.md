@@ -14,9 +14,4 @@ _Making the setters being used once?_
 
 
 7. Save abilities as int[] yes!
-
-8. Create ERRORS FOR BAD TYPE INS UnknownRace Error For Player
-
-
-
-formatText change - to _ & double check it not working with "DEX"
+8. formatText change - to _ & double check it not working with "DEX"
