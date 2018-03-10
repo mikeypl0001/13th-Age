@@ -12,7 +12,15 @@ public class NegativeValueError extends RuntimeException {
 	}
 	
 	public NegativeValueError(String msg) {
+		
 		super(msg);
+		
+	}
+	
+	public NegativeValueError(int arrayLength) {
+		
+		super("Array Contained Negative Value. These Values Cannot Be Less Than Zero");
+		
 	}
 	
 }

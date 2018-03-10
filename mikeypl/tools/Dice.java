@@ -442,5 +442,12 @@ public class Dice {
 		print ( Theory.expVal_plus_N_SD ( -1, 3, 4 ) );
 		print ( Theory.expVal_plus_N_SD ( -1, 6 ) );
 		print ( Theory.expVal_plus_N_SD ( 3.0, 5, 1.1 ) );
+		
+		//getSmallestValPos
+		for (int i = 0; i < 21; i++) {
+			Dice pleaseWork = new Dice(4, 6);
+			pleaseWork.printDiceRolls();
+			print(pleaseWork.getSmallestValPos());
+		}
 	}
 }

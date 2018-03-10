@@ -1,14 +1,19 @@
-package mikeypl._13th_Age;
+package mikeypl._13th_Age.characters;
 
 import mikeypl.tools.Dice;
 import mikeypl._13th_Age.interfaces.*;
+import static mikeypl.tools.TextAndDisplay.*;
+import static mikeypl.tools.NumberChecks.*;
+import mikeypl._13th_Age.stats.RaceAbilities;
+import mikeypl.tools.errors.NegativeValueError;
+import mikeypl.tools.errors.PositiveValueError;
 //import java.util.ArrayList;
 
 /**
- *  More to do with how this works, remember you can use checkPositive
+ *  TEST the Inputs with negative values
  */
 
-public class Player extends Character implements LvlUp, FullRest, Abilities {//extends Ally maybe
+public class Player extends Character /*implements LvlUp, FullRest, Abilities*/ {
 	
 	//Name Race Class
 	private String className;
@@ -18,13 +23,12 @@ public class Player extends Character implements LvlUp, FullRest, Abilities {//e
 	 
 	private int lvl = 1;
 	
-	private int str, strBonus, con, conBonus, intgnce, intgnceBonus;
-	private int dex, dexBonus, wis, wisBonus, cha, chaBonus;
+	private int[] abilities = new int[6]; //{str, con, dex, int, wis, cha}
+	private int[] abilitiesBonus = {0, 0, 0, 0, 0, 0}; //{strBonus, ..., chaBonus}
 	private int initiativeBonus;
 	
-	
 	//Main Figures
-	private int currRec, maxRecov = 8, gp;
+	private int currRec, maxRecov = 8, gp = 0;
 	
 	
 	//private ArrayList<RaceAbilities> raceAbilities;
@@ -56,8 +60,8 @@ public class Player extends Character implements LvlUp, FullRest, Abilities {//e
 		this.className = className;
 		this.currRec = maxRecov;
 			
-		randomiseStats ();
-		//super ( name, race, npc, ally, )
+		randomiseStats();
+		
 		
 		//SetlvlMods
 		//Initiative
@@ -65,30 +69,42 @@ public class Player extends Character implements LvlUp, FullRest, Abilities {//e
 		
 	}
 	
-	Player( String name, String race, String className,
-							int str, int con, int dex, int intgnce, int wis, int cha ) {
+	Player(String name, String race, String className, String ability) {
+		
+		this(name, race, className);
+		RaceAbilities currPlayer = new RaceAbilities(this, ability);
+		
+	}
+	
+	Player( String name, String race, String className, int[] abilities ) {
 		//PLACEHOLDER						
 		super(name, race, CharType.PLAYER, 0, 0, 0, 0);
 		
-		this.className = super.formatText ( className );
-		this.str = checkPositive(str);
-		this.con = checkPositive(con);
-		this.dex = checkPositive(dex);
-		this.intgnce = checkPositive(intgnce);
-		this.wis = checkPositive(wis);
-		this.cha = checkPositive(cha);
-		
+		this.className = formatText ( className );
+		this.abilities = checkPositive(abilities);
+			
 		this.currRec = maxRecov;
-								
+	
 	}
-							
-	Player( String name, String race, String className,
-							int str, int con, int dex, int intgnce, int wis, int cha,
-								int recov ) {
+	
+	Player(String name, String race, String className, int[] abilities, String ability) {
+		
+		this(name, race, className, abilities);
+		RaceAbilities currPlayer = new RaceAbilities(this, ability);
+	}
+	
+	Player( String name, String race, String className, int[] abilities, int recov ) {
 									
-		this (name, race, className, str, con, dex, intgnce, wis, cha);
+		this (name, race, className, abilities);
 		this.maxRecov = checkPositive(recov);
 		this.currRec = maxRecov;
+		
+	}
+	
+	Player(String name, String race, String className, int[] abilities, String ability, int recov) {
+		
+		this(name, race, className, abilities, recov);
+		RaceAbilities currPlayer = new RaceAbilities(this, ability);
 		
 	}
 	
@@ -97,128 +113,220 @@ public class Player extends Character implements LvlUp, FullRest, Abilities {//e
 	
 	public void randomiseStats () {
 		//roll 4d6 for each of six abilities then add the best three
-		//result = { str val, con val, dex val, intgnce val, wis val, cha val}
-		//for loop from0 to 5 of sum of three best die
+		//result = { str val, con val, dex val, int val, wis val, cha val}
+		//for loop from 0 to 5 of sum of three best die
 		
-		int [] results = new int[6];
+		int [] resultingAbilities = new int[6];
 		
-		for ( int i = 0; i < results.length; i++ ) {
+		for ( int i = 0; i < resultingAbilities.length; i++ ) {
 			
 			Dice A = new Dice ( 4 , 6 );
+			
 			int min_val_pos = A.getSmallestValPos();
-			results[i] = 0;
 			
-			for ( int j = 0; j < 3; j++ ) {
-				
+			resultingAbilities[i] = 0;
+			
+			for ( int j = 0; j < 4; j++ ) {
 				if ( j != min_val_pos )
-					
-					results[i] += A.getdiceArr ( i );
-					
+					resultingAbilities[i] += A.getdiceArr(j);
 			}
-			
 		}
-		
-		setAbilities ( results );
+		setAbilities ( resultingAbilities );
 				
 	}
 	
 	//SETTERS
 	
+	public void addAbilities(int[] array) {
+		
+		try {
+			
+			if (array.length > abilities.length) {
+				throw new ArrayIndexOutOfBoundsException();
+			}
+			
+			for (int i = 0; i < 6; i++) {
+				this.abilities[i] += array[i];
+			}
+			
+		} catch (ArrayIndexOutOfBoundsException e) {
+			print("Array Mismatch, there should be only 6 Indexs");
+		}		
+	}
+	
 	public void incStr ( int val ) {
 		
-		this.str += val;
-		
+		try {
+			int diff = checkPositive(abilities[0] + val);
+			this.abilities[0] += val;
+		} catch (NegativeValueError e) {
+			print(e);
+		}
+			
 	}
 	
 	public void addStrBonus ( int val ) {
 		
-		this.strBonus = val;
+		try {
+			int diff = checkPositive(abilitiesBonus[0] + val);
+			this.abilitiesBonus[0] += val;
+		} catch (NegativeValueError e) {
+			print(e);
+		}
 	}
 	
 	public void incCon ( int val ) {
 		
-		this.con += val;
+		try {
+			int diff = checkPositive(abilities[1] + val);
+			this.abilities[1] += val;
+		} catch (NegativeValueError e) {
+			print(e);
+		}
 		
 	}
 	
 	public void addConBonus ( int val ) {
 		
-		this.conBonus = val;
-	}
+		try {
+			int diff = checkPositive(abilitiesBonus[1] + val);
+			this.abilitiesBonus[1] += val;
+		} catch (NegativeValueError e) {
+			print(e);
+		}
 	
 	public void incDex ( int val ) {
 		
-		this.dex += val;
+		try {
+			int diff = checkPositive(abilities[2] + val);
+			this.abilities[2] += val;
+		} catch (NegativeValueError e) {
+			print(e);
+		}
 		
 	}
 	
 	public void addDexBonus ( int val ) {
 		
-		this.dexBonus = val;
+		try {
+			int diff = checkPositive(abilitiesBonus[2] + val);
+			this.abilitiesBonus[2] += val;
+		} catch (NegativeValueError e) {
+			print(e);
+		}
 		
 	}
 	
-	public void incIntgnce ( int val ) {
+	public void incInt ( int val ) {
 		
-		this.intgnce += val;
+		try {
+			int diff = checkPositive(abilities[3] + val);
+			this.abilities[3] += val;
+		} catch (NegativeValueError e) {
+			print(e);
+		}
 		
 	}
 	
-	public void addIntgnceBonus ( int val ) {
+	public void addIntBonus ( int val ) {
 		
-		this.intgnceBonus = val;
+		try {
+			int diff = checkPositive(abilitiesBonus[3] + val);
+			this.abilitiesBonus[3] += val;
+		} catch (NegativeValueError e) {
+			print(e);
+		}
 		
 	}
 	
 	public void incWis ( int val ) {
 		
-		this.wis += val;
+		try {
+			int diff = checkPositive(abilities[4] + val);
+			this.abilities[4] += val;
+		} catch (NegativeValueError e) {
+			print(e);
+		}
 		
 	}
 	
 	public void addWisBonus ( int val ) {
 		
-		this.wisBonus = val;
+		try {
+			int diff = checkPositive(abilitiesBonus[4] + val);
+			this.abilitiesBonus[4] += val;
+		} catch (NegativeValueError e) {
+			print(e);
+		}
 	
 	}
 	
 	public void incCha ( int val ) {
 		
-		this.cha += val;
+		try {
+			int diff = checkPositive(abilities[5] + val);
+			this.abilities[5] += val;
+		} catch (NegativeValueError e) {
+			print(e);
+		}
 		
 	}
 	
 	public void addChaBonus ( int val ) {
 		
-		this.chaBonus = val;
+		try {
+			int diff = checkPositive(abilitiesBonus[5] + val);
+			this.abilitiesBonus[5] += val;
+		} catch (NegativeValueError e) {
+			print(e);
+		}
 		
 	}
 	
 	public void incGP ( int val ) {
 		
-		this.gp += val;
-		
+		try {
+			this.gp += checkPositive(val);
+		} catch (NegativeValueError e) {
+			print("Don't increase GP by a negative amount");
+		}
+				
 	}
 	
 	public void decGP ( int val ) {
 		
-		this.gp -= val;
+		try {
+			int diff = checkPositive(this.gp - checkNegative(val));
+			this.gp -= val;
+		} catch(PositiveValueError e) {
+			print("val cannot be positive");
+		} catch (NegativeValueError f) {
+			print("You Cannot Buy That Item, you do not have enough GP");
+		}
 		
 	}
 	
 	public void setMaxRecoveries ( int val ) {
 		
-		int difference = val - maxRecov;
-		this.currRec += difference;
-		this.maxRecov = val;
+		try {
+			int difference = checkPositive(val - maxRecov);
+			this.currRec += difference
+			this.maxRecov = val;
+		} catch (NegativeValueError e) {
+			print("val needs to be more than maxRecov");
+		}
 		
 	}
 	
 	public void incMaxRecoveries ( int val ) {
 		
-		this.currRec += val;
-		this.maxRecov += val;
-		
+		try {
+			this.currRec += checkPositive(val);
+			this.maxRecov += checkPositive(val);
+		} catch (NegativeValueError e) {
+			print("You are meant to be Increasing Your Recoveries NOT decreasing!");
+		}
+					
 	}
 	
 	//HP DONE IN SUPERCLASS
@@ -237,12 +345,12 @@ public class Player extends Character implements LvlUp, FullRest, Abilities {//e
 	
 	public void setAbilities ( int[] val ) {
 		
-		this.str = val[0];
-		this.con = val[1];
-		this.dex = val[2];
-		this.intgnce = val[3];
-		this.wis = val[4];
-		this.cha = val[5];
+		this.abilities[0] = val[0];
+		this.abilities[1] = val[1];
+		this.abilities[2] = val[2];
+		this.abilities[3] = val[3];
+		this.abilities[4] = val[4];
+		this.abilities[5] = val[5];
 		
 	}
 	
@@ -278,112 +386,115 @@ public class Player extends Character implements LvlUp, FullRest, Abilities {//e
 	
 	//GETTERS
 	
+	public int[]  getAbilities() {
+		return this.abilities;
+	}
+	
 	public int getStr () {
 		
-		return this.str;
+		return this.abilities[0];
 		
 	}
 	
 	public int getStrMod () {
 		
-		return calcAbilityMods ( str );
+		return calcAbilityMods ( abilities[0] );
 		
 	}
 	
 	public int getStrBonus () {
 		
-		return this.strBonus;
+		return this.abilitiesBonus[0];
 		
 	}
 	
 	public int getCon () {
 		
-		return this.con;
+		return this.abilities[1];
 		
 	}
 	
 	public int getConMod () {
 		
-		return calcAbilityMods ( con );
+		return calcAbilityMods ( abilities[1] );
 		
 	}
 	
 	public int getConBonus () {
 		
-		return this.conBonus;
+		return this.abilitiesBonus[1];
 		
 	}
 	
 	public int getDex () {
 		
-		return this.dex;
+		return this.abilities[2];
 		
 	}
 	
 	public int getDexMod () {
 		
-		return calcAbilityMods ( dex );
+		return calcAbilityMods ( abilities[2] );
 		
 	}
 	
 	public int getDexBonus () {
 		
-		return this.dexBonus;
+		return this.abilitiesBonus[2];
 		
 	}
 	
-	public int getIntgnce () {
+	public int getInt () {
 		
-		return this.intgnce;
-		
-	}
-	
-	public int getIntgnceMod () {
-		
-		return calcAbilityMods ( intgnce );
+		return this.abilities[3];
 		
 	}
 	
-	public int getIntgnceBonus () {
+	public int getIntMod () {
 		
-		return this.intgnceBonus;
+		return calcAbilityMods ( abilities[3] );
 		
 	}
 	
+	public int getIntBonus () {
+		
+		return this.abilitiesBonus[3];
+		
+	}
 	
 	public int getWis () {
 		
-		return this.wis;
+		return this.abilities[4];
 		
 	}
 
 	public int getWisMod () {
 		
-		return calcAbilityMods ( wis );
+		return calcAbilityMods ( abilities[4] );
 		
 	}
 	
 	public int getWisBonus () {
 		
-		return this.wisBonus;
+		return this.abilitiesBonus[4];
 		
 	}
 	
 	public int getCha () {
 		
-		return this.cha;
+		return this.abilities[5];
 		
 	}
 	
 	public int getChaMod () {
 		
-		return calcAbilityMods ( cha );
+		return calcAbilityMods ( abilities[5] );
 		
 	}
 	
 	public int getChaBonus () {
 		
-		return this.chaBonus;
+		return this.abilitiesBonus[5];
 		
 	}
 	
@@ -392,7 +503,7 @@ public class Player extends Character implements LvlUp, FullRest, Abilities {//e
 		return this.lvl;
 	}
 	
-	public String get_Class () {
+	public String getClassName() {
 		
 		return this.className;
 		
@@ -415,9 +526,7 @@ public class Player extends Character implements LvlUp, FullRest, Abilities {//e
 		return this.maxRecov;
 		
 	}
-	
-	
-	
+		
 	public static int getLvlMod ( int lvl ) {
 		
 		if ( lvl <= 4 ) {
@@ -443,9 +552,81 @@ public class Player extends Character implements LvlUp, FullRest, Abilities {//e
 		
 	}
 	
+	public static void main(String[] args) {
+		
+		Player gary = new Player("Gar-ou Ray", "Wood Elf", "Ranger");
+		printArray(gary.getAbilities());
+		//GETTERS
+		
+		print(gary.getStr());
+		print(gary.getCon());
+		print(gary.getDex());
+		print(gary.getInt());
+		print(gary.getWis());
+		print(gary.getCha());
+		
+		print("Getting MODs of Abilities");
+		print(gary.getStrMod());
+		print(gary.getConMod());
+		print(gary.getDexMod());
+		print(gary.getIntMod());
+		print(gary.getWisMod());
+		print(gary.getChaMod());
+		
+		print("Getting Mod Bonuses");
+		gary.addStrBonus(1);
+		gary.addConBonus(2);
+		gary.addDexBonus(-3);
+		gary.addIntBonus(4);
+		gary.addWisBonus(5);
+		gary.addChaBonus(3);
+		print(gary.getStrBonus());
+		print(gary.getConBonus());
+		print(gary.getDexBonus());
+		print(gary.getIntBonus());
+		print(gary.getWisBonus());
+		print(gary.getChaBonus());
+		
+		//Level
+		print("Level");
+		print(gary.getLvl());
+		
+		//Class
+		print(gary.getClassName());
+		print(gary.getRace());
+		//GP
+		print(gary.getGP());
+		//Recoveries
+		print(gary.getNumOfRecoveries());
+		print(gary.getMaxRecoveries());
+		//LVL MOD
+		print("Level Mod at Lvl 5");
+		print(getLvlMod(5));
+		
+		//SETTERS
+		gary.addAbilities(new int[]{2,2,2,2,2,2,});
+		printArray(gary.getAbilities());
+		
+		//incAbilities
+		print("Increasing Abilities");
+		gary.incStr(-1);//What if this goes negative throw Negative thingy...
+		gary.incCon(1);
+		gary.incDex(2);
+		gary.incInt(3);
+		gary.incWis(4);
+		gary.incCha(5);
+		printArray(gary.getAbilities());
+		//GP
+		gary.incGP(50);
+		gary.decGP(3);
+		print("GP: " + gary.getGP());
+	}
 	
-	
+		
 	
 	/* Changed my Dice subclass for 13th age to change the sum method and include modifiers to dice sum*/
+	
 	//Add bonus variable to abilities and maybe boolean.
+	
+	
 }

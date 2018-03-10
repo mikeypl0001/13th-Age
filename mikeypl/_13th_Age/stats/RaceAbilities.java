@@ -1,7 +1,12 @@
 package mikeypl._13th_Age.stats;
 
-import mikeypl._13th_Age.Character;
 import mikeypl.tools.errors.*;
+import static mikeypl.tools.TextAndDisplay.*;
+import mikeypl._13th_Age.characters.Player;
+
+/**
+ *  Add stuff to do with feats?
+ */
 
 public class RaceAbilities {
 	
@@ -12,20 +17,22 @@ public class RaceAbilities {
 	
 	public RaceAbilities(String race, String ability) {
 		try {
-			this.race = isARace(Character.formatText(race));
-			this.ability = isAnAbility(Character.formatText(ability));
+			this.race = isARace(formatText(race));
+			this.ability = isAnAbility(formatText(ability));
 		} catch (RuntimeException e) {
 			System.out.println(e);
 		}		
 	}
 	
-	/*public RaceAbilities(Player player, String ability) {
-		this(player.getRace(), ability);
-		int[] abilityArray = player.getAbilityArray();
-		int[] temp = checkMatchesRace();
-		player.changeAbilityArray(temp);
+	public RaceAbilities(Player player, String ability) {
 		
-	}*/
+		this(player.getRace(), ability);
+		
+		int[] abilityArray = player.getAbilities();
+		int[] temp = abilityRaceStartBonus();
+		player.addAbilities(temp);
+		
+	}
 	
 	private static String isAnAbility(String ability) throws UnknownAbilityError {
 		//Checks it's an Ability in the list
@@ -66,7 +73,7 @@ public class RaceAbilities {
 	}
 	
 	
-	public int[] scoreAdjustments() throws RaceAbilityMismatchError {
+	public int[] abilityRaceStartBonus() throws RaceAbilityMismatchError {
 	
 		int[] abilityAdjust = {0, 0, 0, 0, 0, 0};
 		int abilityIndex = 6;
@@ -173,25 +180,21 @@ public class RaceAbilities {
 			
 	}
 	
+	
+	
 	public static void main(String[] args) {
-		//System.out.println(Character.formatText("DEX"));
+		//System.out.println(formatText("DEX"));
 		RaceAbilities gary = new RaceAbilities("wood_elf", "DEX");
 		RaceAbilities gary2 = new RaceAbilities("wooD_elf", "str");
 		RaceAbilities gary3 = new RaceAbilities("wood_elf", "str");
 		try {
-			int[] gary3Ability = gary3.scoreAdjustments();
+			int[] gary3Ability = gary3.abilityRaceStartBonus();
 		} catch (RuntimeException e) {
 			System.out.println(e);
 		}
 		RaceAbilities urekTar = new RaceAbilities("half_orc", "dex");
 		
-		int[] stuff = urekTar.scoreAdjustments();
-		
-		String toPrint = "[";
-		for (int i = 0; i < stuff.length - 1; i++) {
-			toPrint += stuff[i] +",";
-		}
-		toPrint += stuff[stuff.length - 1] + "]";
-		System.out.println(toPrint);
+		int[] stuff = urekTar.abilityRaceStartBonus();
+		printArray(stuff);
 	}
 }

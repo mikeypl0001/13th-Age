@@ -3,6 +3,7 @@ package mikeypl._13th_Age.characters;
 import mikeypl.tools.errors.NegativeValueError;
 import mikeypl._13th_Age.interfaces.CharMethods;
 import static mikeypl.tools.TextAndDisplay.*;
+import static mikeypl.tools.NumberChecks.checkPositive;
 
 class Character implements CharMethods {
 	
@@ -207,17 +208,6 @@ class Character implements CharMethods {
 		return (charType == CharType.ALLY);
 		
 	}
-//Check if Anything is postive,
-	//PROTECTED?
-	protected static int checkPositive(int value) throws NegativeValueError {
-		
-		if (value < 0) {
-			throw new NegativeValueError();
-		} else {
-			return value;
-		}
-	}
-	
 
 	public void randomiseStats () { } //Subclass Implementation
 

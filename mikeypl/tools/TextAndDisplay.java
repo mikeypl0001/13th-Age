@@ -142,5 +142,16 @@ public class TextAndDisplay {
 		System.out.println(input);
 	}
 	
+	public static void printArray(int[] input) {
+		
+		String toPrint = "[";
+		for (int i = 0; i < input.length - 1; i++) {
+			toPrint += input[i] +",";
+		}
+		toPrint += input[input.length - 1] + "]";
+		
+		print(toPrint);
+	}
+	
 
 }

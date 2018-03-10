@@ -13,5 +13,5 @@
 _Making the setters being used once?_
 
 
-7. Save abilities as int[] yes!
+7. Negative Test in Player & Neg in Char
 8. formatText change - to _ & double check it not working with "DEX"
