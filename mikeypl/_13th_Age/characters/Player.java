@@ -1,6 +1,8 @@
 package mikeypl._13th_Age;
 
 import mikeypl.tools.Dice;
+import mikeypl._13th_Age.interfaces.*;
+//import java.util.ArrayList;
 
 /**
  *  More to do with how this works, remember you can use checkPositive
@@ -24,6 +26,8 @@ public class Player extends Character implements LvlUp, FullRest, Abilities {//e
 	//Main Figures
 	private int currRec, maxRecov = 8, gp;
 	
+	
+	//private ArrayList<RaceAbilities> raceAbilities;
 	/**
 	//Other Stuff
 	private String[][] icons, backgrounds;

@@ -1,6 +1,4 @@
-package mikeypl._13th_Age;
-
-import mikeypl.tools.Dice;
+package mikeypl.tools;
 
 class Dice_13 extends Dice {
 	

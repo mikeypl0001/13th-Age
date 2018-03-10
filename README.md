@@ -12,4 +12,11 @@
 
 _Making the setters being used once?_
 
-?Ally ENEMEY SYSTEM IN CHAR.java i.e. player not become ally or enemy rethink variables
+
+7. Save abilities as int[] yes!
+
+8. Create ERRORS FOR BAD TYPE INS UnknownRace Error For Player
+
+
+
+formatText change - to _ & double check it not working with "DEX"
