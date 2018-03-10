@@ -1,6 +1,7 @@
-package mikeypl._13th_Age;
+package mikeypl._13th_Age.stats;
 
 import mikeypl._13th_Age.Character;
+import mikeypl.tools.errors.*;
 
 public class RaceAbilities {
 	
@@ -13,7 +14,7 @@ public class RaceAbilities {
 		try {
 			this.race = isARace(Character.formatText(race));
 			this.ability = isAnAbility(Character.formatText(ability));
-	} catch (RuntimeException e) {
+		} catch (RuntimeException e) {
 			System.out.println(e);
 		}		
 	}
@@ -26,7 +27,7 @@ public class RaceAbilities {
 		
 	}*/
 	
-	private static String isAnAbility(String ability) {
+	private static String isAnAbility(String ability) throws UnknownAbilityError {
 		//Checks it's an Ability in the list
 		
 		boolean withinABILITY = false;
@@ -41,11 +42,11 @@ public class RaceAbilities {
 		if (withinABILITY) {
 			return ability;
 		} else {
-			throw new RuntimeException("NOT AN ABILITY, shold be str, con, dex, int, wis or cha");
+			throw new UnknownAbilityError();
 		}
 	}
 	
-	private static String isARace(String race) {
+	private static String isARace(String race) throws UnknownRaceError {
 		//Checks it's a Race in the list
 		
 		boolean withinRACE = false;
@@ -60,12 +61,12 @@ public class RaceAbilities {
 		if (withinRACE) {
 			return race;
 		} else {
-			throw new RuntimeException("NOT A RACE, should be human, dwarf, dark_elf, high_elf, wood_elf, gnome, half_elf, half_orc or halfling");
+			throw new UnknownRaceError();
 		}
 	}
 	
 	
-	public int[] scoreAdjustments() {//throws RaceAbilityMismatchError
+	public int[] scoreAdjustments() throws RaceAbilityMismatchError {
 	
 		int[] abilityAdjust = {0, 0, 0, 0, 0, 0};
 		int abilityIndex = 6;
@@ -104,12 +105,12 @@ public class RaceAbilities {
 			return abilityAdjust;
 			
 		} else {
-			throw new RuntimeException("RaceAbilityMismatchError");
+			throw new RaceAbilityMismatchError();
 		}
 
 	}
 	
-	private boolean checkMatchesRace() { //throws UnknownRaceError
+	private boolean checkMatchesRace() { 
 		
 		
 		boolean result = false;

@@ -1,4 +1,4 @@
-package mikeypl.tools;
+package mikeypl.tools.errors;
 
 import java.lang.RuntimeException;
 
