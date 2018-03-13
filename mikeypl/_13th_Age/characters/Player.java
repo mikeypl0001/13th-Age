@@ -139,7 +139,7 @@ public class Player extends Character /*implements LvlUp, FullRest, Abilities*/ 
 			
 			for ( int j = 0; j < 4; j++ ) {
 				if ( j != min_val_pos )
-					resultingAbilities[i] += A.getdiceArr(j);
+					resultingAbilities[i] += A.getDiceArr(j);
 			}
 		}
 		setAbilities ( resultingAbilities );
