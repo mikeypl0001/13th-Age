@@ -7,7 +7,7 @@ public class NumberChecks {
 
 	public static int checkNegative(int value) throws PositiveValueError {
 		
-		if ( val > 0) {
+		if ( value > 0) {
 			throw new PositiveValueError();
 		} else {
 			return value;

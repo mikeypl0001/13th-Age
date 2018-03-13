@@ -3,7 +3,7 @@ package mikeypl._13th_Age.characters;
 import mikeypl.tools.errors.NegativeValueError;
 import mikeypl._13th_Age.interfaces.CharMethods;
 import static mikeypl.tools.TextAndDisplay.*;
-import static mikeypl.tools.NumberChecks.checkPositive;
+import static mikeypl.tools.NumberChecks.*;
 
 class Character implements CharMethods {
 	

@@ -206,6 +206,8 @@ public class Player extends Character /*implements LvlUp, FullRest, Abilities*/ 
 			print(e);
 		}
 	
+	}
+	
 	public void incDex ( int val ) {
 		
 		try {
@@ -321,7 +323,7 @@ public class Player extends Character /*implements LvlUp, FullRest, Abilities*/ 
 		
 		try {
 			int difference = checkPositive(val - maxRecov);
-			this.currRec += difference
+			this.currRec += difference;
 			this.maxRecov = val;
 		} catch (NegativeValueError e) {
 			print("val needs to be more than maxRecov");
