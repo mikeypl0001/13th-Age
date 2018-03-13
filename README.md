@@ -15,3 +15,5 @@ _Making the setters being used once?_
 
 7. Negative Test in Player & Neg in Char
 8. formatText change - to _ & double check it not working with "DEX"
+
+Rules increasing maxRec & maxHP effecting currRec & currHP

@@ -8,7 +8,7 @@ import static mikeypl.tools.NumberChecks.checkPositive;
 class Character implements CharMethods {
 	
 	//STATS
-	private int ac, pd, md, curr_hp, max_hp;
+	private int ac, pd, md, currHP, maxHP;
 	
 	//CHARACTER NAME, 
 	private String name, race;
@@ -26,11 +26,17 @@ class Character implements CharMethods {
 		this.name = formatText ( name );
 		this.race = formatText ( race );
 		this.charType = charType;
-		this.ac = checkPositive(ac);
-		this.pd = checkPositive(pd);
-		this.md = checkPositive(md);
-		this.max_hp = checkPositive(hp);
-		this.curr_hp = max_hp;
+		
+		try {
+			this.ac = checkPositive(ac);
+			this.pd = checkPositive(pd);
+			this.md = checkPositive(md);
+			this.maxHP = checkPositive(hp);
+		} catch (RuntimeException e) {
+			print(e);
+		}
+		
+		this.currHP = maxHP;
 		
 	}
 	
@@ -55,83 +61,99 @@ class Character implements CharMethods {
 	
 	public void setMaxHP (int val) {
 		
-		this.max_hp = checkPositive(val);
+		try {
+			this.maxHP = checkPositive(val);
+		} catch (RuntimeException e) {
+			print(e);
+		}
 		
 	}
 	
 	public void setCurrHP ( int val ) {
 		
-		if (val > max_hp)
-			System.out.printf("Invalid Current HP, you enter %d when the max health is %d \n", val, max_hp);
-		else
-			this.curr_hp = checkPositive(val);
+		try {
+			int diff = checkPositive(maxHP - val);
+			this.currHP = val;
+		} catch (NegativeValueError e) {
+			print(e);
+		}
 		
+		//DEATH & DYING THING sunclass implementation?
 	}
 	
 	public void setACMDPDHP ( int ac, int pd, int md, int hp ) {
 		
-		this.ac = checkPositive(ac);
-		this.pd = checkPositive(pd);
-		this.md = checkPositive(md);
-		this.max_hp = checkPositive(hp);
+		try {
+			this.ac = checkPositive(ac);
+			this.pd = checkPositive(pd);
+			this.md = checkPositive(md);
+			this.maxHP = checkPositive(hp);
+		} catch (NegativeValueError e) {
+			print(e);
+		}
 		
 	}
 	
 	public void changeAC ( int ac ) {
 		
-		this.ac = checkPositive(ac);
+		try {
+			this.ac = checkPositive(ac);
+		} catch (NegativeValueError e) {
+			print(e);
+		}
 		
 	}
 	
 	public void changePD ( int pd ) {
 		
-		this.pd = checkPositive(pd);
+		try {
+			this.pd = checkPositive(pd);
+		} catch (NegativeValueError e) {
+			print(e);
+		}
 		
 	}
 	
 	public void changeMD ( int md ) {
 		
-		this.md = checkPositive(md);
+		try {
+			this.md = checkPositive(md);
+		} catch (NegativeValueError e) {
+			print(e);
+		}
 		
 	}
 	
 	public void changeMaxHP ( int hp ) {
 		
-		this.max_hp = checkPositive(hp);
-				
+		try {
+			this.maxHP = checkPositive(hp);
+		} catch (NegativeValueError e) {
+			print(e);
+		}
+			
 	}
 	
 	public void incCurrHP (int val) {
 		
-		if (val + curr_hp > max_hp) {
-			
-			System.out.printf("Invalid Current HP, you enter %d which gives " + 
-				"a total Current HP of %d when the max health is %d \n",
-					val, val + curr_hp, max_hp);
-			
-		} else {
-		
-			this.curr_hp += val;
-			
+		try {
+			int difference = checkNegative((val + currHP) - maxHP);
+			this.currHP += val;
+		} catch (RuntimeException e) {
+			print("HP increase cannot be more than your current maxHP, setting currHP to maxHP");
+			this.currHP = maxHP;
 		}
-		
-		if (this.curr_hp <= 0) {
-			System.out.println("YOU ARE DEAD");
-			//DEAD & DYING METHOD
-		}
+		//DEATH & DYING
 	}
 	
 	public void incMaxHP ( int val ) throws NegativeValueError {
 		
-		if (val >= 0) {
-			
-			this.max_hp += val;
-			this.curr_hp += val;
-		
-		} else {
-			
-			throw new NegativeValueError("YOU ARE MEANT TO BE INCREASING HEALTH NOT DECREASING!");
-			
+		try {
+			val = checkPositive(val);
+			this.maxHP += val;
+			this.currHP += val;
+		} catch (NegativeValueError e) {
+			print("This is not increasing your maxHP");
 		}
 		
 	}
@@ -177,12 +199,12 @@ class Character implements CharMethods {
 	
 	public int getCurrHP () {
 		
-		return this.curr_hp;
+		return this.currHP;
 	}
 	
 	public int getMaxHP () {
 		
-		return this.max_hp;
+		return this.maxHP;
 		
 	}
 	

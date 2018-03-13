@@ -57,7 +57,7 @@ public class Player extends Character /*implements LvlUp, FullRest, Abilities*/ 
 		//PLACEHOLDER`
 		super(name, race, CharType.PLAYER, 0, 0, 0, 0);
 		
-		this.className = className;
+		this.className = formatText(className);
 		this.currRec = maxRecov;
 			
 		randomiseStats();
@@ -80,8 +80,13 @@ public class Player extends Character /*implements LvlUp, FullRest, Abilities*/ 
 		//PLACEHOLDER						
 		super(name, race, CharType.PLAYER, 0, 0, 0, 0);
 		
-		this.className = formatText ( className );
-		this.abilities = checkPositive(abilities);
+		this.className = formatText(className);
+		
+		try {
+			this.abilities = checkPositive(abilities);
+		} catch (RuntimeException e) {
+			print(e + "Ability Array");
+		}
 			
 		this.currRec = maxRecov;
 	
@@ -96,7 +101,13 @@ public class Player extends Character /*implements LvlUp, FullRest, Abilities*/ 
 	Player( String name, String race, String className, int[] abilities, int recov ) {
 									
 		this (name, race, className, abilities);
-		this.maxRecov = checkPositive(recov);
+		
+		try {
+			this.maxRecov = checkPositive(recov);
+		} catch (RuntimeException e) {
+			print(e + "Max Recoveries");
+		}
+		
 		this.currRec = maxRecov;
 		
 	}
@@ -296,10 +307,10 @@ public class Player extends Character /*implements LvlUp, FullRest, Abilities*/ 
 	public void decGP ( int val ) {
 		
 		try {
-			int diff = checkPositive(this.gp - checkNegative(val));
+			int diff = checkPositive(this.gp + checkNegative(-val));
 			this.gp -= val;
 		} catch(PositiveValueError e) {
-			print("val cannot be positive");
+			print("You Cannot Decrease Your GP by a Negative Amount");
 		} catch (NegativeValueError f) {
 			print("You Cannot Buy That Item, you do not have enough GP");
 		}
