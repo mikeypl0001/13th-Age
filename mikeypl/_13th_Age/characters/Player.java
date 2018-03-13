@@ -85,7 +85,7 @@ public class Player extends Character /*implements LvlUp, FullRest, Abilities*/ 
 		try {
 			this.abilities = checkPositive(abilities);
 		} catch (RuntimeException e) {
-			print(e + "Ability Array");
+			print(e + " Ability Array");
 		}
 			
 		this.currRec = maxRecov;
@@ -105,7 +105,7 @@ public class Player extends Character /*implements LvlUp, FullRest, Abilities*/ 
 		try {
 			this.maxRecov = checkPositive(recov);
 		} catch (RuntimeException e) {
-			print(e + "Max Recoveries");
+			print(e + " Max Recoveries");
 		}
 		
 		this.currRec = maxRecov;
@@ -633,6 +633,10 @@ public class Player extends Character /*implements LvlUp, FullRest, Abilities*/ 
 		gary.incGP(50);
 		gary.decGP(3);
 		print("GP: " + gary.getGP());
+		
+		//ERRORS
+		Player bob = new Player("Bob", "Gnome", "Sorceror", new int[] {-1, 2, 2, 2, 2, 2});
+		bob.addConBonus(-4);
 	}
 	
 		
