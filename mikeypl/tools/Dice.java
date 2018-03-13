@@ -116,8 +116,7 @@ public class Dice {
 		
 		for ( int i = 0; i < numOfRolls; i++ ) {
 			
-			Double temp = Math.ceil ( Math.random () * dX );
-			resultingRolls[i] = temp.intValue();
+			resultingRolls[i] =(new Double( Math.ceil ( Math.random () * dX ) ) ).intValue();
 			
 		}
 		
