@@ -3,27 +3,35 @@ package mikeypl.tools;
 class Dice_13 extends Dice {
 	
 	private int plus;
+	private int sumOfRolls;
 	
-	public Dice_13( int num_rolls, int dX ) {
+	public Dice_13( int numOfRolls, int dX, boolean wantText ) {
 		
-		super ( num_rolls, dX );
+		super ( numOfRolls, dX );
 		
-		beginnning ();
-		printDiceRolls ();
-		display_sum ();
+		if (wantText) {
+			beginnning ();
+			printDiceRolls ();
+			display_sum ();
+		}
 		
 	}
 	
-	public Dice_13 ( int num_rolls, int dX, int plus ) {
+	public Dice_13(int numOfRolls, int dX) {
+		this (numOfRolls, dX, true);
+	}
+	
+	public Dice_13 ( int numOfRolls, int dX, int plus ) {
 		
-		super ( num_rolls, dX );
+		super ( numOfRolls, dX );
 		this.plus = plus;
+		this.sumOfRolls = this.getSumOfRolls() + plus;
 		
 	}
 	
 	public void beginnning () {
 		
-		System.out.println ( super.getNum_rolls () +" d" +super.getdX () +":" );
+		System.out.println ( super.getNumOfRolls () +" d" +super.getdX () +":" );
 		
 	}
 	
@@ -34,12 +42,12 @@ class Dice_13 extends Dice {
 		
 	}
 	
-	public static void rollingSave ( int saveVal ) {
+	public static void rollingSave ( int saveVal ) { //Return boolean?
 		
 		Dice A = new Dice(20);
 		
-		double valRolled = A.getdiceArr ( 0 );
-		System.out.println ( "You rolled " +A.toString_DiceRolls () );
+		int valRolled = A.getDiceArr ( 0 );
+		System.out.println ( "You rolled " +A.toStringDiceRolls () );
 		
 		
 		if ( valRolled < saveVal )
@@ -52,15 +60,15 @@ class Dice_13 extends Dice {
 			
 	}
 	
-	public double getSumOfRolls () {
+	public int getSumOfRolls () {
 		
 		//SUM ALL ROLLS FROM 1st Dice to Nth Dice plus the
 		
-		double answer = plus;
+		int answer = plus;
 		
 		for ( int i=0; i <getLength (); i++ ) {
 			
-			answer += getdiceArr(i);
+			answer += getDiceArr(i);
 		}
 		
 		return answer;

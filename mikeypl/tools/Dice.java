@@ -1,21 +1,23 @@
 package mikeypl.tools;
 
+import java.lang.Double;
+
 public class Dice {
 	
 	//Want to create an array of x rolls 
 	//Expected Value & Standard Deviation of x die of y
 	
-	private int num_rolls, dX, length, dXnum;
-	private double[] diceArr;
+	private int numOfRolls, dX, length, dXnum;
+	private int[] diceArr;
 	private double[][] diceArr1;
 	
 //CONSTRUCTOR
 	public Dice ( int rolls, int dX ) {
 		
 		//SETTING
-		this.num_rolls = rolls;
+		this.numOfRolls = rolls;
 		this.dX = dX;
-		this.diceArr = new double[rolls];
+		this.diceArr = new int[rolls];
 		this.length = diceArr.length;
 		
 		//GETTING VALUES FOR EACH DICE
@@ -28,9 +30,9 @@ public class Dice {
 		
 	}
 //GETTERS	
-	public int getNum_rolls () {
+	public int getNumOfRolls () {
 		
-		return this.num_rolls;	
+		return this.numOfRolls;	
 		
 	}
 	
@@ -40,13 +42,13 @@ public class Dice {
 		
 	}
 	
-	public double[] getdiceArr () {
+	public int[] getDiceArr () {
 		
 		return this.diceArr;
 		
 	}
 	
-	public double getdiceArr ( int pos ) {
+	public int getDiceArr ( int pos ) {
 		
 		if (pos >= length ) {
 			
@@ -69,7 +71,7 @@ public class Dice {
 	
 //SETTERS
 
-	public void setDiceVal ( int pos, double val ) {
+	public void setDiceVal ( int pos, int val ) {
 
 		//checking there isn't an error
 		
@@ -79,7 +81,7 @@ public class Dice {
 		
 	}
 
-	public void setDiceRolls ( double[] new_vals ) {
+	public void setDiceRolls ( int[] new_vals ) {
 		
 		//checking for right length
 		int new_length = new_vals.length;
@@ -101,23 +103,26 @@ public class Dice {
 	
 	public void settingRANDDiceRolls () {
 		
-		double [] result = settingRANDDiceRolls ( getNum_rolls (), getdX() );
+		int[] result = settingRANDDiceRolls ( getNumOfRolls (), getdX() );
 		
 		setDiceRolls ( result );
 		
 	}
 	
-	public static double [] settingRANDDiceRolls (int num_rolls, int dX ) {
+	public static int[] settingRANDDiceRolls (int numOfRolls, int dX ) {
 		
-		double[] resulting_rolls = new double[num_rolls];
+		int[] resultingRolls = new int[numOfRolls];
+		//int[] returnThis = new int[numOfRolls];
 		
-		for ( int i = 0; i < num_rolls; i++ ) {
+		for ( int i = 0; i < numOfRolls; i++ ) {
 			
-			resulting_rolls[i] = Math.ceil ( Math.random () * dX );
+			Double temp = Math.ceil ( Math.random () * dX );
+			resultingRolls[i] = temp.intValue();
 			
 		}
 		
-		return resulting_rolls;
+		
+		return resultingRolls;
 		
 	}
 	
@@ -130,7 +135,7 @@ public class Dice {
 		
 	}
 		
-	private int checkValues ( int pos, double val ) {
+	private int checkValues ( int pos, int val ) {
 		
 		//Checks all array elements are well defined
 		
@@ -161,26 +166,26 @@ public class Dice {
 	
 
 //TO STRING	
-	public String toString_DiceRolls() {
+	public String toStringDiceRolls() {
 		/* For looping "val," from 1st roll to (N-1)th as Final Roll doesn't need  a ,
 		So a { is added at the beginning then after the for loop val}
 		*/
 		
 		String answer  = "{";
 		
-		for (int i=0; i < getNum_rolls() -1; i++ ) {
+		for (int i=0; i < getNumOfRolls() -1; i++ ) {
 			
-			answer += this.getdiceArr(i) +", ";
+			answer += this.getDiceArr(i) +", ";
 		}
 		
-		return answer +getdiceArr ( getNum_rolls () -1 ) +"}"; //final element as java starts at 0
+		return answer +getDiceArr ( getNumOfRolls () -1 ) +"}"; //final element as java starts at 0
 		
 	}
 	
 //PRINTERS
 	public void printDiceRolls() {
 		
-		System.out.println( toString_DiceRolls() );
+		System.out.println( toStringDiceRolls() );
 		
 	}
 	
@@ -191,15 +196,15 @@ public class Dice {
 
 //CALCULATIONS	
 
-	public double getSumOfRolls () {
+	public int getSumOfRolls () {
 		
 		//SUM ALL ROLLS FROM 1st Dice to Nth Dice 
 		
-		double answer = 0;
+		int answer = 0;
 		
 		for ( int i=0; i <getLength (); i++ ) {
 			
-			answer += getdiceArr(i);
+			answer += getDiceArr(i);
 		}
 		
 		return answer;
@@ -209,7 +214,7 @@ public class Dice {
 		
 		//SUM/AMOUNT
 		
-		return getSumOfRolls() / getNum_rolls();
+		return getSumOfRolls() / getNumOfRolls();
 		
 	}
 	
@@ -223,12 +228,12 @@ public class Dice {
 		
 		for ( int i=0; i < getLength(); i++ ) {
 			
-			double difference = getdiceArr(i) - mean;
+			double difference = getDiceArr(i) - mean;
 			sumOfSquares += difference * difference;
 			
 		}
 		
-		return sumOfSquares / getNum_rolls();
+		return sumOfSquares / getNumOfRolls();
 		
 	}
 	
@@ -241,7 +246,7 @@ public class Dice {
 		
 		for ( int i = 0; i < getLength(); i++ ) {
 			
-			if ( getdiceArr ( i ) <= getdiceArr ( min_val_pos ) )
+			if ( getDiceArr ( i ) <= getDiceArr ( min_val_pos ) )
 				
 				min_val_pos = i;
 			
@@ -261,7 +266,7 @@ public class Dice {
 	
 	/*	//MULTIPLE ONES
 	Dice(int rolls, int dX, int dXnum){
-		this.rolls = getNum_rolls;
+		this.rolls = getNumOfRolls;
 		this.dX = dX;
 		this.dXnum = dXnum;
 		this.diceArr1 = new double[dXnum][rolls];
@@ -299,11 +304,11 @@ public class Dice {
 	
 	public static class Theory {
 		
-		public static double expectedVal ( int num_rolls, int dX ) {
+		public static double expectedVal ( int numOfRolls, int dX ) {
 			
 			//The Expected Value for N dXs is N(0.5dX(dX+1))/dX
 			
-			return ( num_rolls * 0.5 * dX * ( dX +1 ) ) / dX;
+			return ( numOfRolls * 0.5 * dX * ( dX +1 ) ) / dX;
 			
 		}
 
@@ -313,11 +318,11 @@ public class Dice {
 		
 		}
 	
-		public static double variance ( int num_rolls, int dX ) {
+		public static double variance ( int numOfRolls, int dX ) {
 			
 			//The Variance of N dXs is N/12 ((dX)^2 - 1)
 	
-			return ( num_rolls * ( dX * dX -1 ) ) / 12;
+			return ( numOfRolls * ( dX * dX -1 ) ) / 12;
 			
 		}
 	
@@ -327,10 +332,10 @@ public class Dice {
 		
 		}
 	
-		public static double standardDeviation (int num_rolls, int dX ) {
+		public static double standardDeviation (int numOfRolls, int dX ) {
 			
 			//Standard Deviation is the sqrt of the variance
-			return Math.sqrt ( variance ( num_rolls, dX ) );
+			return Math.sqrt ( variance ( numOfRolls, dX ) );
 			
 		}
 	
@@ -347,9 +352,9 @@ public class Dice {
 			return expVal + N * standDev;
 		}
 		
-		public static double expVal_plus_N_SD ( int N, int num_rolls, int dX ) {
+		public static double expVal_plus_N_SD ( int N, int numOfRolls, int dX ) {
 			
-			return expectedVal ( num_rolls, dX ) + N * standardDeviation ( num_rolls, dX );
+			return expectedVal ( numOfRolls, dX ) + N * standardDeviation ( numOfRolls, dX );
 			
 		}
 		//one roll case
@@ -371,16 +376,16 @@ public class Dice {
 	
 		//GETTERS
 		print ( "NUM ROLLS" );
-		print ( a.getNum_rolls() );
-		print ( b.getNum_rolls() );
+		print ( a.getNumOfRolls() );
+		print ( b.getNumOfRolls() );
 	
 		print ( "getdX" );
 		print ( a.getdX() );
 		print ( b.getdX() );
 	
-		print( "getdiceArr" );
-		for ( int i = 0 ; i < a.getNum_rolls() ; i++ ) {
-			print( a.getdiceArr(i) );
+		print( "getDiceArr" );
+		for ( int i = 0 ; i < a.getNumOfRolls() ; i++ ) {
+			print( a.getDiceArr(i) );
 		}
 		
 		print ( "getLength" );
@@ -393,7 +398,7 @@ public class Dice {
 		a.printDiceRolls ();
 		
 		print ( "setDiceRolls" );
-		double[] roll = { 1, 2, 3, 4, 5, 6, 8 };
+		int[] roll = { 1, 2, 3, 4, 5, 6, 8 };
 		a.setDiceRolls ( roll );
 		a.printDiceRolls ();
 		
