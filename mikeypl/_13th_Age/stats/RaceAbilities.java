@@ -7,6 +7,8 @@ import mikeypl._13th_Age.characters.Player;
 /**
  *  Add stuff to do with feats?
  */
+ 
+ //Humans get 2 feats at lvl 1
 
 public class RaceAbilities {
 	
@@ -14,6 +16,12 @@ public class RaceAbilities {
 	private static final String[] ABILITY = {"str", "con", "dex", "int", "wis", "cha"};
 	private static final String[] RACE = {"human", "dwarf", "dark_elf", "high_elf", "wood_elf",
 											"gnome", "half_elf", "half_orc", "halfling"};
+	
+	private static final String[][] RACIALPOWER = 
+		{"human" {
+			""
+		},
+		}
 	
 	public RaceAbilities(String race, String ability) {
 		try {
