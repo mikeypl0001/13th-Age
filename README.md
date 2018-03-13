@@ -5,9 +5,9 @@
 
 1. Sort out inputing and outputting data
 2. Implement Talents, Feats... special class - _Array lists_
-3. MD, PD, AC ... calculations, bases - depend on armour - another class!
-4. Death & Dying
-5. New Class For Static Methods?
+3. Player Char/Play Init AC,MD,... & Attack Penalty & Recovery Die
+4. What mod added to base stats of HP on Player?
+5. Death & Dying
 6. _Lots of other things I cannot think of_
 
 _Making the setters being used once?_
