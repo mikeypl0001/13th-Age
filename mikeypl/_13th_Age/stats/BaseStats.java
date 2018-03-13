@@ -1,6 +1,5 @@
 package mikeypl._13th_Age.stats;
 
-import mikeypl._13th_Age.characters.Character;
 import mikeypl._13th_Age.characters.Player;
 import static mikeypl.tools.TextAndDisplay.*;
 
