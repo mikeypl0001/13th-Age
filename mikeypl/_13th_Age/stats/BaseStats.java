@@ -30,7 +30,7 @@ class BaseStats {
 	}
 	
 	public int setAC(String armourType) {
-		setAC(String armourType, false);
+		setAC(armourType, false);
 	}
 	
 	public int setAC(String armourType, boolean hasShield) { //NEED to Create THING WITH ATTACK PENALTY
