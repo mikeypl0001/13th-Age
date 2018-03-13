@@ -208,7 +208,7 @@ class BaseStats {
 	}
 	
 	public int setRecoverydX() {
-		//6 - sorcerer, wizard, 8 - bard, cleric, ranger, rogue, 10 - barbarian, fighter, paladin
+
 		switch(className) {
 			case: "sorcerer": case "wizard":
 				recoverydX = 6;
