@@ -17,12 +17,6 @@ public class RaceAbilities {
 	private static final String[] RACE = {"human", "dwarf", "dark_elf", "high_elf", "wood_elf",
 											"gnome", "half_elf", "half_orc", "halfling"};
 	
-	private static final String[][] RACIALPOWER = 
-		{"human" {
-			""
-		},
-		}
-	
 	public RaceAbilities(String race, String ability) {
 		try {
 			this.race = isARace(formatText(race));
