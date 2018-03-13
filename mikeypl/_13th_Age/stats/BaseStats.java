@@ -35,7 +35,7 @@ class BaseStats {
 	
 	public int setAC(String armourType, boolean hasShield) { //NEED to Create THING WITH ATTACK PENALTY
 		
-		this.armourTypeType = formatText(armourType); //CHECK it is one of the following...
+		this.armourType = formatText(armourType); //CHECK it is one of the following...
 		this.hasShield = hasShield;
 		int acWithNoArmour;
 		
