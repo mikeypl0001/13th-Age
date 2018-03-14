@@ -57,7 +57,7 @@ public class Player extends Character /*implements LvlUp, FullRest, Abilities*/ 
 	*/
 	
 	//CONSTRUCTORS
-	Player( String name, String race, String className ) {
+	public Player( String name, String race, String className ) {
 		//PLACEHOLDER`
 		super(name, isARace(formatText(race)), CharType.PLAYER, 0, 0, 0, 0);
 		
@@ -74,14 +74,14 @@ public class Player extends Character /*implements LvlUp, FullRest, Abilities*/ 
 		
 	}
 	
-	Player(String name, String race, String className, String ability) {
+	public Player(String name, String race, String className, String ability) {
 		
 		this(name, race, className);
 		RaceAbilities currPlayer = new RaceAbilities(this, isAnAbility(ability));
 		
 	}
 	
-	Player( String name, String race, String className, int[] abilities ) {
+	public Player( String name, String race, String className, int[] abilities ) {
 		//PLACEHOLDER						
 		super(name, race, CharType.PLAYER, 0, 0, 0, 0);
 		
@@ -97,13 +97,13 @@ public class Player extends Character /*implements LvlUp, FullRest, Abilities*/ 
 	
 	}
 	
-	Player(String name, String race, String className, int[] abilities, String ability) {
+	public Player(String name, String race, String className, int[] abilities, String ability) {
 		
 		this(name, race, className, abilities);
 		RaceAbilities currPlayer = new RaceAbilities(this, isAnAbility(ability));
 	}
 	
-	Player( String name, String race, String className, int[] abilities, int recov ) {
+	public Player( String name, String race, String className, int[] abilities, int recov ) {
 									
 		this (name, race, className, abilities);
 		
@@ -117,7 +117,7 @@ public class Player extends Character /*implements LvlUp, FullRest, Abilities*/ 
 		
 	}
 	
-	Player(String name, String race, String className, int[] abilities, String ability, int recov) {
+	public Player(String name, String race, String className, int[] abilities, String ability, int recov) {
 		
 		this(name, race, className, abilities, recov);
 		RaceAbilities currPlayer = new RaceAbilities(this, isAnAbility(ability));
@@ -598,7 +598,7 @@ public class Player extends Character /*implements LvlUp, FullRest, Abilities*/ 
 	
 	public static void main(String[] args) {
 		
-		Player gary = new Player("Gar-ou Ray", "Wood Elf", "Ranger");
+		Player gary = new Player("Gar-ou Ray", "wood_elf", "ranger");
 		printArray(gary.getAbilities());
 		//GETTERS
 		

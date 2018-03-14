@@ -2,6 +2,8 @@ package mikeypl._13th_Age.stats;
 
 import java.util.ArrayList;
 import mikeypl._13th_Age.characters.Player;
+import mikeypl.tools.errors.*;
+import static mikeypl.tools.RaceClassEtcWellPosed.*;
 
 public class RacialPower {
 	
@@ -40,7 +42,7 @@ public class RacialPower {
 			"+2 AC bonus against opportunity attacks"},
 		{"Evasive",
 			 "Once per battle, force an enemy that hits you with an attack to reroll the attack with a " + "-2 penalty"}
-	}
+	};
 	
 	private String race;
 	private ArrayList<String> name; //of RacialPower
@@ -57,14 +59,16 @@ public class RacialPower {
 		this(player.getRace());
 	}
 	
-	public RacialPower(String race) {
+	public RacialPower(String race) throws BadArguementError {
 		
-		this.race = race;
+		this.race = isARace(race);
+		name = new ArrayList<String>();
+		description = new ArrayList<String>();
 		
 		switch (race) {
 			case "human":
 				this.name.add(RACIALPOWER[0][0]);
-				this.description.add(RacialPower[0][1]);
+				this.description.add(RACIALPOWER[0][1]);
 				break;
 			case "dwarf":
 				this.name.add(RACIALPOWER[1][0]);
@@ -105,7 +109,7 @@ public class RacialPower {
 				this.description.add(RACIALPOWER[11][1]);
 				break;
 			default:
-				System.out.println("RACE NOT RECOGNISED");
+				throw new BadArguementError();
 			
 		}
 		
@@ -132,19 +136,48 @@ public class RacialPower {
 	}
 	*/
 	
-	public void gotChampFeat() {
-		this.hasChampFeat = true;
+	public void gotChampFeat(boolean hasChampFeat) {
+		this.hasChampFeat = hasChampFeat;
 	}
 	
-	public void gotElfFeat() {
-		this.hasElfFeat = true;
+	public void gotElfFeat(boolean hasElfFeat) throws RaceFeatMismatchError {
+		
+		if ((race == "wood_elf" || race == "high_elf" || race == "dark_elf") && hasElfFeat) {
+			this.hasElfFeat = true;
+		} else if (hasElfFeat == false){
+			this.hasElfFeat = false;
+		} else {
+			throw new RaceFeatMismatchError();
+		}
+		
 	}
 	
 	public String[][] getAllRacialPowers() {
 		return this.RACIALPOWER;
 	}
 	
+	public boolean hasChampFeat() {
+		return this.hasChampFeat;
+	}
 	
+	public boolean hasElfFeat() {
+		return this.hasElfFeat;
+	}
+	
+	public static void main(String[] args) {
+		Player geoff = new Player("geoff", "wood_elf", "ranger", "dex");
+		RacialPower rpGeoff = new RacialPower(geoff);
+		System.out.println(rpGeoff.getRace());
+		System.out.println(rpGeoff.getName());
+		System.out.println(rpGeoff.getDescription());
+		System.out.println(rpGeoff.hasChampFeat());
+		System.out.println(rpGeoff.hasElfFeat());
+		rpGeoff.gotChampFeat(true);
+		rpGeoff.gotElfFeat(true);
+		System.out.println(rpGeoff.hasChampFeat());
+		System.out.println(rpGeoff.hasElfFeat());
+		
+	}
 	
 	
 	//Class For Champion feat for each of these!

@@ -3,6 +3,7 @@ package mikeypl._13th_Age.stats;
 import mikeypl._13th_Age.characters.Player;
 import static mikeypl.tools.TextAndDisplay.*;
 import static mikeypl.tools.RaceClassEtcWellPosed.*;
+import static mikeypl.tools.TextAndDisplay.*;
 import mikeypl.tools.errors.*;
 
 public class BaseStats {
@@ -47,77 +48,71 @@ public class BaseStats {
 	
 	public int setAC(String armourType, boolean hasShield) throws BadArguementError {
 		
-		try {
-			this.armourType = isAnArmour(formatText(armourType));
-			this.hasShield = hasShield;
-			int acWithNoArmour;
-			
-			if (className == "rogue") {
-				acWithNoArmour = 11;
-			} else {
-				acWithNoArmour = 10;
-			}
-			int acWithArmour = 0;
-			
-			switch(armourType) {
-				
-				case "none":
-					acWithArmour = acWithNoArmour;
-					break;
-				
-				case "light":
-					switch(className) {
-						case "sorcerer": case "wizard":
-							acWithArmour = 10;
-							break;
-						case "barbarian": case "bard": case "cleric": case "paladin": case "rogue":
-							acWithArmour = 12;
-							break;
-						case "fighter":
-							acWithArmour = 13;
-							break;
-						case "ranger":
-							acWithArmour = 14;
-							break;
-						default:
-							throw new BadArguementError();
-					}
-					break;
-				
-				case "heavy":
-					switch(className) {
-						case "sorcerer": case "wizard":
-							acWithArmour = 11;
-							break;
-						case "barbarian": case "bard": case "rogue":
-							acWithArmour = 13;
-							break;
-						case "cleric":
-							acWithArmour = 14;
-							break;
-						case "fighter": case "ranger":
-							acWithArmour = 15;
-							break;
-						case "paladin":
-							acWithArmour = 16;
-							break;
-					}
-					break;
-					
-				default:
-					throw new BadArguementError();
-					
-				}
-			
-			int acWithShield = hasShield ? (acWithArmour + 1) : acWithArmour;
-			
-			return acWithShield;
-			
-		} catch (UnknownArmourError e) {
-			System.out.println(e);
-			return -1;
+		this.armourType = isAnArmour(formatText(armourType));
+		this.hasShield = hasShield;
+		int acWithNoArmour;
+		
+		if (className == "rogue") {
+			acWithNoArmour = 11;
+		} else {
+			acWithNoArmour = 10;
 		}
+		int acWithArmour = 0;
+		
+		switch(armourType) {
+			
+			case "none":
+				acWithArmour = acWithNoArmour;
+				break;
+			
+			case "light":
+				switch(className) {
+					case "sorcerer": case "wizard":
+						acWithArmour = 10;
+						break;
+					case "barbarian": case "bard": case "cleric": case "paladin": case "rogue":
+						acWithArmour = 12;
+						break;
+					case "fighter":
+						acWithArmour = 13;
+						break;
+					case "ranger":
+						acWithArmour = 14;
+						break;
+					default:
+						throw new BadArguementError();
+				}
+				break;
+			
+			case "heavy":
+				switch(className) {
+					case "sorcerer": case "wizard":
+						acWithArmour = 11;
+						break;
+					case "barbarian": case "bard": case "rogue":
+						acWithArmour = 13;
+						break;
+					case "cleric":
+						acWithArmour = 14;
+						break;
+					case "fighter": case "ranger":
+						acWithArmour = 15;
+						break;
+					case "paladin":
+						acWithArmour = 16;
+						break;
+				}
+				break;
 				
+			default:
+				throw new BadArguementError();
+				
+			}
+		
+		int acWithShield = hasShield ? (acWithArmour + 1) : acWithArmour;
+		
+		return acWithShield;
+	
 	}
 	
 	
@@ -199,6 +194,7 @@ public class BaseStats {
 	}
 	
 	public int getBaseAttackPenalty() {
+		setAttackPenalty();
 		return this.attackPenalty;
 	}
 	
@@ -253,6 +249,19 @@ public class BaseStats {
 		return recoverydX;
 	}
 	
-	
+	public static void main(String[] args) {
+		
+		Player bob = new Player("bob", "half_orc", "paladin");
+		BaseStats playerBob = new BaseStats(bob);
+		System.out.println(playerBob.setHP());
+		System.out.println(playerBob.setAC("heavy", true));
+		System.out.println(playerBob.setMD());
+		System.out.println(playerBob.setPD());
+		System.out.println(playerBob.getBaseAttackPenalty());
+		printArray(playerBob.changeArmour("light"));
+		printArray(playerBob.changeHasShield(false));
+		print(playerBob.setRecoverydX());
+		
+	}
 	
 }
