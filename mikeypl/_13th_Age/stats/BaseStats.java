@@ -2,6 +2,8 @@ package mikeypl._13th_Age.stats;
 
 import mikeypl._13th_Age.characters.Player;
 import static mikeypl.tools.TextAndDisplay.*;
+import static mikeypl.tools.RaceClassEtcWellPosed.*;
+import mikeypl.tools.error.*;
 
 class BaseStats {
 	
@@ -13,11 +15,19 @@ class BaseStats {
 	
 	//background points, recoveryDie
 	
-	public BaseStats(Player player) {
-		this.className = player.getClassName();
+	public BaseStats(String className) {
+		try {
+			this.className = isAClassName(className);
+		} catch (UnknownClassError e) {
+			System.out.println(e);
+		}
 	}
 	
-	public int setHP() {
+	public BaseStats(Player player) {
+		this(player.getClassName());
+	}
+	
+	public int setHP(){
 		
 		switch(className) {
 			case "barbarian": case "bard": case "cleric": case "ranger":
@@ -26,80 +36,92 @@ class BaseStats {
 				return 8;
 			case "rogue": case "sorcerer": case "wizard":
 				return 6;
-		}//default throw error
+			
+		}
 	}
 	
 	public int setAC(String armourType) {
 		setAC(armourType, false);
 	}
 	
-	public int setAC(String armourType, boolean hasShield) { //NEED to Create THING WITH ATTACK PENALTY
+	public int setAC(String armourType, boolean hasShield) throws BadArguementError {
 		
-		this.armourType = formatText(armourType); //CHECK it is one of the following...
-		this.hasShield = hasShield;
-		int acWithNoArmour;
-		
-		if (className = "rogue") { //WANT TO CHECK FOR NOT A CLASS
-			acWithNoArmour = 11;
-		} else {
-			acWithNoArmour = 10;
-		}
-		int acWithArmour;
-		
-		switch(armourType) {
+		try {
+			this.armourType = isAnArmour(formatText(armourType));
+			this.hasShield = hasShield;
+			int acWithNoArmour;
 			
-			case "none":
-				acWithArmour = acWithNoArmour;
-				break;
-			
-			case "light":
-				switch(className) {
-					case "sorcerer": case "wizard":
-						acWithArmour = 10;
-						break;
-					case "barbarian": case "bard": case "cleric": case "paladin": case "rogue":
-						acWithArmour = 12;
-						break;
-					case "fighter":
-						acWithArmour = 13;
-						break;
-					case "ranger":
-						acWithArmour = 14;
-						break;
-					default:
-						break;
-				}
-				break;
-			
-			case "heavy":
-				switch(className) {
-					case "sorcerer": case "wizard":
-						acWithArmour = 11;
-						break;
-					case "barbarian": case "bard": case "rogue":
-						acWithArmour = 13;
-						break;
-					case "cleric":
-						acWithArmour = 14;
-						break;
-					case "fighter": case "ranger":
-						acWithArmour = 15;
-						break;
-					case "paladin":
-						acWithArmour = 16;
-						break;
-				}
-				break;//default throw error
-				
+			if (className = "rogue") {
+				acWithNoArmour = 11;
+			} else {
+				acWithNoArmour = 10;
 			}
-		
-		int acWithShield = hasShield ? (acWithArmour + 1) : acWithArmour;
-		
-		return acWithShield;
+			int acWithArmour;
+			
+			switch(armourType) {
 				
+				case "none":
+					acWithArmour = acWithNoArmour;
+					break;
+				
+				case "light":
+					switch(className) {
+						case "sorcerer": case "wizard":
+							acWithArmour = 10;
+							break;
+						case "barbarian": case "bard": case "cleric": case "paladin": case "rogue":
+							acWithArmour = 12;
+							break;
+						case "fighter":
+							acWithArmour = 13;
+							break;
+						case "ranger":
+							acWithArmour = 14;
+							break;
+						default:
+							throw new BadArguementError();
+							break;
+					}
+					break;
+				
+				case "heavy":
+					switch(className) {
+						case "sorcerer": case "wizard":
+							acWithArmour = 11;
+							break;
+						case "barbarian": case "bard": case "rogue":
+							acWithArmour = 13;
+							break;
+						case "cleric":
+							acWithArmour = 14;
+							break;
+						case "fighter": case "ranger":
+							acWithArmour = 15;
+							break;
+						case "paladin":
+							acWithArmour = 16;
+							break;
+					}
+					break;
+					
+				default:
+					throw new BadArguementError();
+					break;
+					
+				}
+			
+			int acWithShield = hasShield ? (acWithArmour + 1) : acWithArmour;
+			
+			return acWithShield;
+			
+		} catch (UnknownArmourError e) {
+			System.out.println(e);
+		}
+				
+		}
 	}
 	
-	public int setPD() {
+	public int setPD() throws BadArguementError {
 		
 		switch(className) {
 			case "bard": case "fighter": case "paladin": case "wizard":
@@ -109,13 +131,12 @@ class BaseStats {
 			case "rogue":
 				return 12;
 			default:
-				//throw
-				return -1;
-		}// default throw error
+				throw new BadArguementError();
+		}
 		
 	}
 	
-	public int setMD() {
+	public int setMD() throws BadArguementError {
 		
 		switch (className) {
 			case "barbarian": case "fighter": case "ranger": case "rogue": case "sorcerer":
@@ -125,12 +146,11 @@ class BaseStats {
 			case "paladin": case "wizard":
 				return 12;
 			default:
-				//throw
-				return -1;
+				throw new BadArguementError();
 		}
 	}
 	
-	public int setAttackPenalty() {
+	public int setAttackPenalty() throws BadArguementError {
 		
 		int armourPenalty;
 		int shieldPenalty;
@@ -138,7 +158,7 @@ class BaseStats {
 		if (armourType == "none" || armourType == "light") {
 			armourPenalty = 0;
 			
-		} else {//error should have been dealt with
+		} else {
 		
 			if (className == "cleric" || className == "fighter" || className = "paladin") {
 				armourPenalty = 0;
@@ -166,11 +186,8 @@ class BaseStats {
 				case "ranger": case "rogue": case "sorcerer": case "wizard":
 					shieldPenalty = -2;
 					break;
-				
 				default:
-					//throw Error
-					shieldPenalty = 0;
-					break;
+					throw new BadArguementError();
 				
 			}
 		}
@@ -187,16 +204,22 @@ class BaseStats {
 	
 	public int[] changeArmour(String newArmourType) {
 		
-		this.armourType = newArmourType;
-		int ac = setAC(armourType, this.hasShield);
-		int attackPenalty = setAttackPenalty();
+		try {
+			this.armourType = isAnArmour(newArmourType);
+			int ac = setAC(armourType, this.hasShield);
+			int attackPenalty = setAttackPenalty();
+			
+			int[] acAndAttackPenalty = {ac, attackPenalty};
+			
+			return acAndAttackPenalty;
 		
-		int[] acAndAttackPenalty = {ac, attackPenalty};
-		
-		return acAndAttackPenalty;
+		} catch (UnknownArmourError e) {
+			System.out.println(e);
+		}
 	}
 	
 	public int[] changeHasShield(boolean hasShield) {
+		
 		this.hasShield = hasShield;
 		int ac = setAC(this.armourType, hasShield);
 		int attackPenalty = setAttackPenalty();
@@ -207,7 +230,7 @@ class BaseStats {
 		
 	}
 	
-	public int setRecoverydX() {
+	public int setRecoverydX() throws BadArguementError {
 
 		switch(className) {
 			case: "sorcerer": case "wizard":
@@ -223,12 +246,12 @@ class BaseStats {
 				break;
 				
 			default:
-				//throw error
-				recoverydX = -1;
-				break;
+				throw new BadArguementError();
 		}
 		
 		return recoverydX;
 	}
+	
+	
 	
 }

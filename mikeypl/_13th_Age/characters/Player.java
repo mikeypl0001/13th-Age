@@ -4,9 +4,10 @@ import mikeypl.tools.Dice;
 import mikeypl._13th_Age.interfaces.*;
 import static mikeypl.tools.TextAndDisplay.*;
 import static mikeypl.tools.NumberChecks.*;
+import static mikeypl.tools.RaceClassEtcWellPosed.*;
 import mikeypl._13th_Age.stats.RaceAbilities;
-import mikeypl.tools.errors.NegativeValueError;
-import mikeypl.tools.errors.PositiveValueError;
+//import mikeypl._13th_Age.stats.BaseStats;
+import mikeypl.tools.errors.*;
 //import java.util.ArrayList;
 
 /**
@@ -55,9 +56,9 @@ public class Player extends Character /*implements LvlUp, FullRest, Abilities*/ 
 	//CONSTRUCTORS
 	Player( String name, String race, String className ) {
 		//PLACEHOLDER`
-		super(name, race, CharType.PLAYER, 0, 0, 0, 0);
+		super(name, isARace(formatText(race)), CharType.PLAYER, 0, 0, 0, 0);
 		
-		this.className = formatText(className);
+		this.className = isAClassName(formatText(className));
 		this.currRec = maxRecov;
 			
 		randomiseStats();
@@ -72,7 +73,7 @@ public class Player extends Character /*implements LvlUp, FullRest, Abilities*/ 
 	Player(String name, String race, String className, String ability) {
 		
 		this(name, race, className);
-		RaceAbilities currPlayer = new RaceAbilities(this, ability);
+		RaceAbilities currPlayer = new RaceAbilities(this, isAnAbility(ability));
 		
 	}
 	
@@ -95,7 +96,7 @@ public class Player extends Character /*implements LvlUp, FullRest, Abilities*/ 
 	Player(String name, String race, String className, int[] abilities, String ability) {
 		
 		this(name, race, className, abilities);
-		RaceAbilities currPlayer = new RaceAbilities(this, ability);
+		RaceAbilities currPlayer = new RaceAbilities(this, isAnAbility(ability));
 	}
 	
 	Player( String name, String race, String className, int[] abilities, int recov ) {
@@ -115,7 +116,7 @@ public class Player extends Character /*implements LvlUp, FullRest, Abilities*/ 
 	Player(String name, String race, String className, int[] abilities, String ability, int recov) {
 		
 		this(name, race, className, abilities, recov);
-		RaceAbilities currPlayer = new RaceAbilities(this, ability);
+		RaceAbilities currPlayer = new RaceAbilities(this, isAnAbility(ability));
 		
 	}
 	

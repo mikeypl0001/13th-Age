@@ -2,6 +2,7 @@ package mikeypl._13th_Age.stats;
 
 import mikeypl.tools.errors.*;
 import static mikeypl.tools.TextAndDisplay.*;
+import static mikeypl.tools.RaceClassEtcWellPosed.*;
 import mikeypl._13th_Age.characters.Player;
 
 /**
@@ -13,10 +14,7 @@ import mikeypl._13th_Age.characters.Player;
 public class RaceAbilities {
 	
 	private String race, ability;
-	private static final String[] ABILITY = {"str", "con", "dex", "int", "wis", "cha"};
-	private static final String[] RACE = {"human", "dwarf", "dark_elf", "high_elf", "wood_elf",
-											"gnome", "half_elf", "half_orc", "halfling"};
-	
+		
 	public RaceAbilities(String race, String ability) {
 		try {
 			this.race = isARace(formatText(race));
@@ -36,45 +34,7 @@ public class RaceAbilities {
 		
 	}
 	
-	private static String isAnAbility(String ability) throws UnknownAbilityError {
-		//Checks it's an Ability in the list
 		
-		boolean withinABILITY = false;
-		
-		for (int i = 0; i < ABILITY.length; i++) {
-			if (ability == ABILITY[i]) {
-				withinABILITY = true;
-				break;
-			}
-		}
-		
-		if (withinABILITY) {
-			return ability;
-		} else {
-			throw new UnknownAbilityError();
-		}
-	}
-	
-	private static String isARace(String race) throws UnknownRaceError {
-		//Checks it's a Race in the list
-		
-		boolean withinRACE = false;
-		
-		for (int i = 0; i < RACE.length; i++) {
-			if (race == RACE[i]) {
-				withinRACE = true;
-				break;
-			}
-		}
-		
-		if (withinRACE) {
-			return race;
-		} else {
-			throw new UnknownRaceError();
-		}
-	}
-	
-	
 	public int[] abilityRaceStartBonus() throws RaceAbilityMismatchError {
 	
 		int[] abilityAdjust = {0, 0, 0, 0, 0, 0};
@@ -114,7 +74,7 @@ public class RaceAbilities {
 			return abilityAdjust;
 			
 		} else {
-			throw new RaceAbilityMismatchError();
+			throw new RaceAbilityMismatchError();//BadArguementError??? maybe
 		}
 
 	}
