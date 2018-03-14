@@ -5,7 +5,7 @@
 
 1. Sort out inputing and outputting data
 2. Implement Talents, Feats... special class - _Array lists_
-3. Player Char/Play Init AC,MD,... & Attack Penalty & Recovery Die
+3. Player Char/Play Init AC,MD,... & Attack Penalty & Recovery Die. Implement Attack Penalty?
 4. What mod added to base stats of HP on Player?
 5. Death & Dying
 6. _Lots of other things I cannot think of_

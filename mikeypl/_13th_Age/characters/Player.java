@@ -5,10 +5,13 @@ import mikeypl._13th_Age.interfaces.*;
 import static mikeypl.tools.TextAndDisplay.*;
 import static mikeypl.tools.NumberChecks.*;
 import static mikeypl.tools.RaceClassEtcWellPosed.*;
+import static mikeypl.tools.MoreMath.median;
 import mikeypl._13th_Age.stats.RaceAbilities;
-//import mikeypl._13th_Age.stats.BaseStats;
+import mikeypl._13th_Age.stats.BaseStats;
 import mikeypl.tools.errors.*;
 //import java.util.ArrayList;
+
+import java.lang.Double;
 
 /**
  *  TEST the Inputs with negative values
@@ -61,12 +64,13 @@ public class Player extends Character /*implements LvlUp, FullRest, Abilities*/ 
 		this.className = isAClassName(formatText(className));
 		this.currRec = maxRecov;
 			
-		randomiseStats();
+		randomiseStats();//update 50/50 for abilities
+		//setInitStats();
 		
 		
 		//SetlvlMods
 		//Initiative
-		//Set ACMDPD
+		
 		
 	}
 	
@@ -123,7 +127,7 @@ public class Player extends Character /*implements LvlUp, FullRest, Abilities*/ 
 	
 	//SET UP VALUES
 	
-	public void randomiseStats () {
+	protected void randomiseStats () {
 		//roll 4d6 for each of six abilities then add the best three
 		//result = { str val, con val, dex val, int val, wis val, cha val}
 		//for loop from 0 to 5 of sum of three best die
@@ -145,6 +149,32 @@ public class Player extends Character /*implements LvlUp, FullRest, Abilities*/ 
 		}
 		setAbilities ( resultingAbilities );
 				
+	}
+	
+	private void setInitStats(String armour, boolean hasShield) { //Attack Penalt
+		BaseStats playerBaseStats = new BaseStats(this);
+		//hp
+		int hpWithoutLvlMod = playerBaseStats.setHP() + this.abilities[1]; //con
+		int hp = hpWithoutLvlMod * getLvlMod(lvl);
+		
+		//ac, withoutMod + median(con, dex, wis) + lvl
+		int acWithoutMod = playerBaseStats.setAC(armour, hasShield);
+		int acStatsMedian = (new Double(median(new int[] {getCon(), getDex(), getWis()}))).intValue();
+		int ac = acWithoutMod + acStatsMedian + lvl;
+		
+		//pd, withoutMod + median(str, con, dex) + lvl
+		int pdWithoutMod = playerBaseStats.setPD();
+		int pdStatsMedian = (new Double (median(new int[] {getStr(), getCon(), getDex()}))).intValue();
+		int pd = pdWithoutMod + pdStatsMedian + lvl;
+		
+		//md, withoutMod + median(int, wis, cha) + lvl
+		int mdWithoutMod = playerBaseStats.setMD();
+		int mdStatsMedian = (new Double (median(new int[] {getInt(), getWis(), getCha()}))).intValue();
+		int md = mdWithoutMod + mdStatsMedian + lvl;
+		
+		this.setACMDPDHP(ac, md, pd, hp);
+		
+		
 	}
 	
 	//SETTERS

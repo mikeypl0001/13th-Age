@@ -1,8 +1,8 @@
-package mikey.tools;
+package mikeypl.tools;
 
-import mikey.tools.error.*;
+import mikeypl.tools.errors.*;
 
-class RaceClassEtcWellPosed {
+public class RaceClassEtcWellPosed {
 	
 	private static final String[] CLASS = {"barbarian", "bard", "cleric", "fighter", "paladin",
 											"ranger", "rogue", "sorcerer", "wizard"};
@@ -49,7 +49,7 @@ class RaceClassEtcWellPosed {
 		}
 	}
 	
-	private static String isAnArmour(String armourType) throws UnknownArmourError {
+	public static String isAnArmour(String armourType) throws UnknownArmourError {
 		
 		boolean throwError = true;
 		
@@ -69,7 +69,7 @@ class RaceClassEtcWellPosed {
 		
 	}
 	
-	private static String isAClassName(String className) throws UnknownClassError {
+	public static String isAClassName(String className) throws UnknownClassError {
 		
 		boolean throwError = true;
 		

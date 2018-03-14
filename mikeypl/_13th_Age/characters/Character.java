@@ -88,6 +88,7 @@ class Character implements CharMethods {
 			this.pd = checkPositive(pd);
 			this.md = checkPositive(md);
 			this.maxHP = checkPositive(hp);
+			this.currHP = maxHP;
 		} catch (NegativeValueError e) {
 			print(e);
 		}
@@ -231,7 +232,7 @@ class Character implements CharMethods {
 		
 	}
 
-	public void randomiseStats () { } //Subclass Implementation
+	protected void randomiseStats () { } //Subclass Implementation
 
 		
 	public static void main ( String[] args ) {

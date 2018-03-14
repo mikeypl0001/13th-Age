@@ -3,9 +3,9 @@ package mikeypl._13th_Age.stats;
 import mikeypl._13th_Age.characters.Player;
 import static mikeypl.tools.TextAndDisplay.*;
 import static mikeypl.tools.RaceClassEtcWellPosed.*;
-import mikeypl.tools.error.*;
+import mikeypl.tools.errors.*;
 
-class BaseStats {
+public class BaseStats {
 	
 	private String className;
 	private String armourType;
@@ -27,7 +27,7 @@ class BaseStats {
 		this(player.getClassName());
 	}
 	
-	public int setHP(){
+	public int setHP() throws BadArguementError {
 		
 		switch(className) {
 			case "barbarian": case "bard": case "cleric": case "ranger":
@@ -36,12 +36,13 @@ class BaseStats {
 				return 8;
 			case "rogue": case "sorcerer": case "wizard":
 				return 6;
-			
+			default:
+				throw new BadArguementError();
 		}
 	}
 	
 	public int setAC(String armourType) {
-		setAC(armourType, false);
+		return setAC(armourType, false);
 	}
 	
 	public int setAC(String armourType, boolean hasShield) throws BadArguementError {
@@ -51,12 +52,12 @@ class BaseStats {
 			this.hasShield = hasShield;
 			int acWithNoArmour;
 			
-			if (className = "rogue") {
+			if (className == "rogue") {
 				acWithNoArmour = 11;
 			} else {
 				acWithNoArmour = 10;
 			}
-			int acWithArmour;
+			int acWithArmour = 0;
 			
 			switch(armourType) {
 				
@@ -80,7 +81,6 @@ class BaseStats {
 							break;
 						default:
 							throw new BadArguementError();
-							break;
 					}
 					break;
 				
@@ -106,7 +106,6 @@ class BaseStats {
 					
 				default:
 					throw new BadArguementError();
-					break;
 					
 				}
 			
@@ -116,10 +115,11 @@ class BaseStats {
 			
 		} catch (UnknownArmourError e) {
 			System.out.println(e);
+			return -1;
 		}
 				
-		}
 	}
+	
 	
 	public int setPD() throws BadArguementError {
 		
@@ -160,7 +160,7 @@ class BaseStats {
 			
 		} else {
 		
-			if (className == "cleric" || className == "fighter" || className = "paladin") {
+			if (className == "cleric" || className == "fighter" || className == "paladin") {
 				armourPenalty = 0;
 			} else {
 				armourPenalty = -2;
@@ -215,6 +215,7 @@ class BaseStats {
 		
 		} catch (UnknownArmourError e) {
 			System.out.println(e);
+			return null;
 		}
 	}
 	
@@ -233,7 +234,7 @@ class BaseStats {
 	public int setRecoverydX() throws BadArguementError {
 
 		switch(className) {
-			case: "sorcerer": case "wizard":
+			case "sorcerer": case "wizard":
 				recoverydX = 6;
 				break;
 				
