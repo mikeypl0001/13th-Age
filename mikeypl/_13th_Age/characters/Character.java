@@ -4,6 +4,7 @@ import mikeypl.tools.errors.NegativeValueError;
 import mikeypl._13th_Age.interfaces.CharMethods;
 import static mikeypl.tools.TextAndDisplay.*;
 import static mikeypl.tools.NumberChecks.*;
+import mikeypl.tools.errors.*;
 
 class Character implements CharMethods {
 	
@@ -15,11 +16,11 @@ class Character implements CharMethods {
 	//private Race race;
 	CharType charType;
 		
-	private int meleeAttackMod, meleeHitMod, meleeMiss; /** NOT IMPLEMENTED YET */
+	//private int meleeAttackMod, meleeHitMod, meleeMiss; /** NOT IMPLEMENTED YET */
 	
-	private int diceMelee, diceRanged; /** NOT IMPLEMENTED YET */
+	//private int diceMelee, diceRanged; /** NOT IMPLEMENTED YET */
 	
-	public boolean inFight;
+	//public boolean inFight;
 	
 	public Character ( String name, String race, CharType charType, int ac, int pd, int md, int hp ) {
 		
@@ -69,17 +70,20 @@ class Character implements CharMethods {
 		
 	}
 	
-	public void setCurrHP ( int val ) {
-		
+	public void setCurrHP(int val) {
 		try {
-			int diff = checkPositive(maxHP - val);
-			this.currHP = val;
-		} catch (NegativeValueError e) {
-			print(e);
+			int diff = checkNegative(val - maxHP);
+			this.currHP = checkPositive(val);
+			
+		} catch (PositiveValueError e) {
+			print("currHP > maxHP setting currHP = maxHP");
+			this.currHP = maxHP;
+		} catch (NegativeValueError f) {
+			print(f);
 		}
-		
-		//DEATH & DYING THING sunclass implementation?
 	}
+		
+		//DEATH & DYING THING sunclass implementation? only on increasing currHP
 	
 	public void setACMDPDHP ( int ac, int pd, int md, int hp ) {
 		
@@ -124,17 +128,7 @@ class Character implements CharMethods {
 		}
 		
 	}
-	
-	public void changeMaxHP ( int hp ) {
-		
-		try {
-			this.maxHP = checkPositive(hp);
-		} catch (NegativeValueError e) {
-			print(e);
-		}
 			
-	}
-	
 	public void incCurrHP (int val) {
 		
 		try {
@@ -298,7 +292,7 @@ class Character implements CharMethods {
 		print(gary.getPD());
 		
 		print("Change Max Health 100");
-		gary.changeMaxHP(100);
+		gary.setMaxHP(100);
 		print(gary.getMaxHP());
 
 		print("Decrease Curr HP by 10");
@@ -323,7 +317,7 @@ class Character implements CharMethods {
 			twoBits.changeAC(1);
 			twoBits.changePD(1);
 			twoBits.changeMD(1);
-			twoBits.changeMaxHP(1);
+			twoBits.setMaxHP(1);
 		//INCREASERS
 		twoBits.incCurrHP(-4);
 		print("CURR HP: " + twoBits.getCurrHP());

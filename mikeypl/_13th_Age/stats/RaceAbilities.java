@@ -4,6 +4,9 @@ import mikeypl.tools.errors.*;
 import static mikeypl.tools.TextAndDisplay.*;
 import static mikeypl.tools.RaceClassEtcWellPosed.*;
 import mikeypl._13th_Age.characters.Player;
+import mikeypl._13th_Age.stats.Ability;
+
+import java.util.ArrayList;
 
 /**
  *  Add stuff to do with feats?
@@ -28,7 +31,6 @@ public class RaceAbilities {
 		
 		this(player.getRace(), ability);
 		
-		int[] abilityArray = player.getAbilities();
 		int[] temp = abilityRaceStartBonus();
 		player.addAbilities(temp);
 		
@@ -43,38 +45,22 @@ public class RaceAbilities {
 		// Checks to see if the ability belongs to that race then sends out that ability else
 				
 		if (checkMatchesRace()) {
-			switch (ability) {
 			
-			case("str"):
-				abilityIndex = 0;
-				break;
-			
-			case("con"):
-				abilityIndex = 1;
-				break;
-				
-			case("dex"):
-				abilityIndex = 2;
-				break;
-				
-			case("int"):
-				abilityIndex = 3;
-				break;
-				
-			case("wis"):
-				abilityIndex = 4;
-				break;
-			
-			case("cha"):
-				abilityIndex = 5;
-				break;
-					
-			}
+			abilityIndex = Ability.getIndex(ability);
 			abilityAdjust[abilityIndex] = 2;
 			return abilityAdjust;
 			
 		} else {
-			throw new RaceAbilityMismatchError();//BadArguementError??? maybe
+			
+			int[] abilityIndexOptions = getRaceAbilityBonus(race);
+			ArrayList<String> abilityWordOptions = new ArrayList<String>(); 
+			
+			for (int i : abilityIndexOptions) {
+				abilityWordOptions.add(Ability.getShortName(i));
+			}
+			
+			print("It should be " + abilityWordOptions);
+			throw new RaceAbilityMismatchError();
 		}
 
 	}
@@ -140,6 +126,34 @@ public class RaceAbilities {
 		}
 		return result;
 			
+	}
+	
+	public static int[] getRaceAbilityBonus(String race) throws BadArguementError {
+		race = isARace(race);
+		//str 0, con 1, dex 2, int 3, wis 4, cha 5
+		
+		switch(race) {
+			case "human":
+				return new int[] {0, 1, 2, 3, 4, 5};
+			case "dwarf":
+				return new int[] {1, 4};
+			case "dark_elf":
+				return new int[] {2, 5};
+			case "high_elf":
+				return new int[] {3, 5};
+			case "wood_elf":
+				return new int[] {2, 4};
+			case "gnome":
+				return new int[] {2, 3};
+			case "half_elf":
+				return new int[] {1, 5};
+			case "half_orc":
+				return new int[] {0, 2};
+			case "halfling":
+				return new int[] {1, 2};
+			default:
+				throw new BadArguementError();
+		} 
 	}
 	
 	

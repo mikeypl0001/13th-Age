@@ -29,7 +29,7 @@ public class Player extends Character /*implements LvlUp, FullRest, Abilities*/ 
 	
 	private int[] abilities = new int[6]; //{str, con, dex, int, wis, cha}
 	private int[] abilitiesBonus = {0, 0, 0, 0, 0, 0}; //{strBonus, ..., chaBonus}
-	private int initiativeBonus;
+	//private int initiativeBonus;
 	
 	//Main Figures
 	private int currRec, maxRecov = 8, gp = 0;
